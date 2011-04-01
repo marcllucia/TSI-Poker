@@ -69,7 +69,7 @@ Game::Game()
     Deck.resize(52);
     for(int i=0; i<52; i++)
     {
-         Deck[i].idCard=i;
+         Deck[i]=i;
     }
     DealCards();
    
@@ -83,8 +83,8 @@ void Game::DealCards()
     for (int i=0;i<4;i++)
     {
         
-        Players[i].Hand[0]=GetRandomCard(Deck);
-        Players[i].Hand[1]=GetRandomCard(Deck);
+        Players[i].Hand[0]=GetRandomCard();
+        Players[i].Hand[1]=GetRandomCard();
         std::cout <<"Player " << i<<": "<< Players[i].Hand[0].idCard << " , "<<Players[i].Hand[1].idCard<<std::endl;
     }
 
@@ -112,8 +112,8 @@ void Game::InitializePlayerCards()
     Players[3].Hand[1].area.set(1-0.09777777777777777-0.025,0.525,0.09777777777777777,0.07);
     Players[3].Hand[1].texture.loadImage(textureData[Players[3].Hand[1].idCard]);
 }
-/*
-void Game::draw()
+
+/*void Game::draw()
 {
     if(objects.size()>0)
     {
@@ -124,9 +124,8 @@ void Game::draw()
             Deck[0].texture.draw(card1.x,card1.y,card1.width,card1.height);
             ofDisableAlphaBlending();
     }
-}
-*/
-/*
+}*/
+
 void Game::update()
 {
     for(int i=0; i<4; i++)
@@ -154,11 +153,11 @@ void Game::update()
         }
     }
 }
-*/
-Card GetRandomCard(vector <Card> &Deck)
+
+Card Game::GetRandomCard()
 {
     int index = rand() % Deck.size();
-    int id=Deck[index].idCard;
+    int id=Deck[index];
     Card c=* new Card();
     c.idCard=id;
     Deck.erase(Deck.begin()+index);

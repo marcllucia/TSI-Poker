@@ -1,4 +1,6 @@
 #include "testApp.h"
+#include "game.h"
+
 #include "CursorFeedback.hpp"
 #include "FigureFeedback.hpp"
 #include "TapFeedback.hpp"
