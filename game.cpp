@@ -69,10 +69,7 @@ Game::Game()
     Deck.resize(52);
     for(int i=0; i<52; i++)
     {
-        //Card card =* new Card();
-        //card.idCard=i;
-
-        Deck[i].idCard=i;
+         Deck[i].idCard=i;
     }
     DealCards();
    
