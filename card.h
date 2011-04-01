@@ -29,6 +29,8 @@ class Card : public OnTable < CanDirectObjects < Graphic > >
     Card(const Card&);
 
     ~Card();
+    
+    void draw();
 
 };
 

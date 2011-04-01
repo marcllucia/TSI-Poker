@@ -66,17 +66,18 @@ Game::Game()
     textureData[51]="images/pica-A.png";
 
 
-    Deck.reserve(52);
-   /* for(int i=0; i<52; i++)
+    Deck.resize(52);
+    for(int i=0; i<52; i++)
     {
-        Card card =* new Card(i);
-        Deck[i]=card;
+        //Card card =* new Card();
+        //card.idCard=i;
+
+        Deck[i].idCard=i;
     }
-/*
-    //Deck[0].texture.loadImage(textureData[3]);
     DealCards();
+   
     InitializePlayerCards();
-    dealer=rand() % 4;*/
+    dealer=rand() % 4;
 
 }
 
@@ -85,9 +86,9 @@ void Game::DealCards()
     for (int i=0;i<4;i++)
     {
         
-        //Players[i].Hand[0]=GetRandomCard(Deck);
-        //Players[i].Hand[1]=GetRandomCard(Deck);
-        //std::cout <<"Player " << i<<": "<< Players[i].Hand[0].idCard << " , "<<Players[i].Hand[1].idCard<<std::endl;
+        Players[i].Hand[0]=GetRandomCard(Deck);
+        Players[i].Hand[1]=GetRandomCard(Deck);
+        std::cout <<"Player " << i<<": "<< Players[i].Hand[0].idCard << " , "<<Players[i].Hand[1].idCard<<std::endl;
     }
 
 }
@@ -119,15 +120,16 @@ void Game::draw()
 {
     if(objects.size()>0)
     {
-            /*ofRectangle card1=Players[0].card1;
+            ofRectangle card1=Players[0].card1;
 
             ofSetColor(255,255,255);
             ofEnableAlphaBlending();
             Deck[0].texture.draw(card1.x,card1.y,card1.width,card1.height);
-            ofDisableAlphaBlending();*//*
+            ofDisableAlphaBlending();
     }
 }
-*//*
+*/
+/*
 void Game::update()
 {
     for(int i=0; i<4; i++)
@@ -159,7 +161,9 @@ void Game::update()
 Card GetRandomCard(vector <Card> &Deck)
 {
     int index = rand() % Deck.size();
-    Card c=Deck[index];
+    int id=Deck[index].idCard;
+    Card c=* new Card();
+    c.idCard=id;
     Deck.erase(Deck.begin()+index);
     return c;
 }

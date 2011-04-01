@@ -20,3 +20,15 @@ Card::Card(int id)
     covered=true;
 }
 
+Card::Card(const Card&)
+{
+    
+}
+
+void Card::draw()
+{
+    texture.draw(area.x,area.y,area.width,area.height);
+    
+}
+
+

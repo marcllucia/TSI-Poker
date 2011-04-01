@@ -17,7 +17,7 @@ using namespace std;
 using namespace tuio;
 
 
-class Game //: public OnTable < CanDirectObjects < Graphic > >
+class Game : public OnTable < CanDirectObjects < Graphic > >
 {
 	public:
 
@@ -26,7 +26,7 @@ class Game //: public OnTable < CanDirectObjects < Graphic > >
 	Player Players[4];
 	int numPlayers;
 	int dealer;
-    //std::map<int, tuio::DirectObject*> objects;
+    std::map<int, tuio::DirectObject*> objects;
 
 
     Game();
