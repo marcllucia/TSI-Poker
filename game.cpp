@@ -1,6 +1,4 @@
-#include "player.h"
 #include "game.h"
-#include "card.h"
 
 #include <vector>
 #include <iostream>
@@ -74,7 +72,7 @@ Game::Game()
     DealCards();
    
     InitializePlayerCards();
-    dealer=rand() % 4;
+   dealer=rand() % 4;
 
 }
 
@@ -82,9 +80,8 @@ void Game::DealCards()
 {
     for (int i=0;i<4;i++)
     {
-        
-        Players[i].Hand[0]=GetRandomCard();
-        Players[i].Hand[1]=GetRandomCard();
+        Players[i].Hand[0].idCard=GetRandomCard();
+        Players[i].Hand[1].idCard=GetRandomCard();
         std::cout <<"Player " << i<<": "<< Players[i].Hand[0].idCard << " , "<<Players[i].Hand[1].idCard<<std::endl;
     }
 
@@ -154,12 +151,10 @@ void Game::update()
     }
 }
 
-Card Game::GetRandomCard()
+int Game::GetRandomCard()
 {
     int index = rand() % Deck.size();
     int id=Deck[index];
-    Card c=* new Card();
-    c.idCard=id;
     Deck.erase(Deck.begin()+index);
-    return c;
+    return id;
 }

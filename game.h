@@ -33,9 +33,9 @@ class Game : public OnTable < CanDirectObjects < Graphic > >
 
     void DealCards();
     void InitializePlayerCards();
-    Card GetRandomCard();
+    int GetRandomCard();
 
-  /*  virtual void newObject(tuio::DirectObject * object)
+    virtual void newObject(tuio::DirectObject * object)
     {
         std::cout<<"OBJECTE DINS"<<std::endl;
         objects[object->f_id]=object;
@@ -48,7 +48,7 @@ class Game : public OnTable < CanDirectObjects < Graphic > >
     virtual void updateObject(tuio::DirectObject * object)
     {
         objects[object->f_id]=object;
-    }*/
+    }
 
     void update();
 };
