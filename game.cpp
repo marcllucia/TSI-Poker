@@ -110,20 +110,8 @@ void Game::InitializePlayerCards()
     Players[3].Hand[1].texture.loadImage(textureData[Players[3].Hand[1].idCard]);
 }
 
-/*void Game::draw()
-{
-    if(objects.size()>0)
-    {
-            ofRectangle card1=Players[0].card1;
 
-            ofSetColor(255,255,255);
-            ofEnableAlphaBlending();
-            Deck[0].texture.draw(card1.x,card1.y,card1.width,card1.height);
-            ofDisableAlphaBlending();
-    }
-}*/
-
-void Game::update()
+/*void Game::update()
 {
     for(int i=0; i<4; i++)
     {
@@ -149,7 +137,7 @@ void Game::update()
             }
         }
     }
-}
+}*/
 
 int Game::GetRandomCard()
 {

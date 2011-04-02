@@ -30,6 +30,30 @@ class Card : public OnTable < CanDirectObjects < Graphic > >
 
     ~Card();
     
+    virtual void newObject(tuio::DirectObject * object)
+    {
+        if(object->getX()>area.x&&object->getX()<area.x+area.width&&object->getY()>area.y&&object->getY()<area.y+area.height)
+        {
+            std::cout<<"OBJECTE DINS"<<std::endl;
+        }
+        //objects[object->f_id]=object;
+    }
+    virtual void removeObject(tuio::DirectObject * object)
+    {
+        std::cout<<"OBJECTE Fora"<<std::endl;
+        //objects.erase(object->f_id);
+    }
+    virtual void updateObject(tuio::DirectObject * object)
+    {
+        if(object->getX()>area.x&&object->getX()<area.x+area.width&&object->getY()>area.y&&object->getY()<area.y+area.height)
+        {
+            std::cout<<"OBJECTE DINS"<<std::endl;
+        }   
+        //objects[object->f_id]=object;
+    }
+    
+
+    
     void draw();
 
 };
