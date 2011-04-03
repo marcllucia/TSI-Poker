@@ -45,11 +45,11 @@ void Card::draw()
     }
     else
     {
-        ofImage texture;
-        texture.loadImage("back.jpg");
-        texture.draw(area.x,area.y,area.width,area.height);
+        ofImage back;
+        back.loadImage("back.jpg");
+        back.draw(area.x,area.y,area.width,area.height);
         
-    }
+    }    
 }
 
 

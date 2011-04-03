@@ -111,6 +111,23 @@ void Game::InitializePlayerCards()
 }
 
 
+void Game::draw()
+{
+    for( map<int,tuio::DirectObject*>::iterator it=objects.begin(); it!=objects.end(); ++it)
+    {
+        DirectObject * obj = it->second;
+        ofImage card;
+        card.loadImage("sss");
+        ofPushMatrix();
+        ofTranslate(obj->getX(),obj->getY(),0);
+        ofRotateZ(obj->angle*180/3.1415);
+        ofTranslate(-(obj->getX()),-(obj->getY()),0);
+        card.draw(obj->getX()-(0.07/2),obj->getY()-(0.098/4),0.07,0.098);
+        ofPopMatrix();
+    }
+    
+}
+
 /*void Game::update()
 {
     for(int i=0; i<4; i++)
