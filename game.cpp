@@ -115,15 +115,15 @@ void Game::InitializePlayerCards()
     Players[3].Hand[1].texture.loadImage(textureData[Players[3].Hand[1].idCard]);
     
     Cards[0].texture.loadImage(textureData[Cards[0].idCard]);
-    Cards[0].area.set(0,0,0.07,0.098);
+    Cards[0].area.set(0,0,0.098,0.07);
     Cards[1].texture.loadImage(textureData[Cards[1].idCard]);
-    Cards[1].area.set(0.085,0,0.07,0.098);
+    Cards[1].area.set(0.085,0,0.098,0.07);
     Cards[2].texture.loadImage(textureData[Cards[2].idCard]);
-    Cards[2].area.set(0.17,0,0.07,0.098);
+    Cards[2].area.set(0.17,0,0.098,0.07);
     Cards[3].texture.loadImage(textureData[Cards[3].idCard]);
-    Cards[3].area.set(0.255,0,0.07,0.098);
+    Cards[3].area.set(0.255,0,0.098,0.07);
     Cards[4].texture.loadImage(textureData[Cards[4].idCard]);
-    Cards[4].area.set(0.34,0,0.07,0.098);
+    Cards[4].area.set(0.34,0,0.098,0.07);
 }
 
 
