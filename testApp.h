@@ -57,7 +57,7 @@ class testApp : public TableApp{
 		void Update();
 		void Draw();
 		void WindowResized(int w, int h);
-        Game game;
+        //Game game;
 };
 
 #endif

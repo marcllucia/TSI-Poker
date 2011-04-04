@@ -11,6 +11,7 @@
 #include "InputGestureMyTap.hpp"
 
 #include "card.h"
+#include "tableCard.h"
 #include "player.h"
 #include <vector>
 
@@ -23,6 +24,7 @@ class Game : public OnTable < CanDirectObjects < Graphic > >
 
 	vector <int> Deck;
     std::string textureData[52];
+    TableCard Cards[5];
 	Player Players[4];
 	int numPlayers;
 	int dealer;

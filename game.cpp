@@ -72,7 +72,7 @@ Game::Game()
     DealCards();
    
     InitializePlayerCards();
-   dealer=rand() % 4;
+    dealer=rand() % 4;
 
 }
 
@@ -83,6 +83,11 @@ void Game::DealCards()
         Players[i].Hand[0].idCard=GetRandomCard();
         Players[i].Hand[1].idCard=GetRandomCard();
         std::cout <<"Player " << i<<": "<< Players[i].Hand[0].idCard << " , "<<Players[i].Hand[1].idCard<<std::endl;
+    }
+    
+    for (int i=0;i<5;i++)
+    {
+        Cards[i].idCard=GetRandomCard();
     }
 
 }
@@ -108,6 +113,17 @@ void Game::InitializePlayerCards()
     Players[3].Hand[0].texture.loadImage(textureData[Players[3].Hand[0].idCard]);
     Players[3].Hand[1].area.set(1-0.09777777777777777-0.025,0.525,0.09777777777777777,0.07);
     Players[3].Hand[1].texture.loadImage(textureData[Players[3].Hand[1].idCard]);
+    
+    Cards[0].texture.loadImage(textureData[Cards[0].idCard]);
+    Cards[0].area.set(0,0,0.07,0.098);
+    Cards[1].texture.loadImage(textureData[Cards[1].idCard]);
+    Cards[1].area.set(0.085,0,0.07,0.098);
+    Cards[2].texture.loadImage(textureData[Cards[2].idCard]);
+    Cards[2].area.set(0.17,0,0.07,0.098);
+    Cards[3].texture.loadImage(textureData[Cards[3].idCard]);
+    Cards[3].area.set(0.255,0,0.07,0.098);
+    Cards[4].texture.loadImage(textureData[Cards[4].idCard]);
+    Cards[4].area.set(0.34,0,0.07,0.098);
 }
 
 
@@ -117,44 +133,15 @@ void Game::draw()
     {
         DirectObject * obj = it->second;
         ofImage card;
-        card.loadImage("sss");
         ofPushMatrix();
         ofTranslate(obj->getX(),obj->getY(),0);
         ofRotateZ(obj->angle*180/3.1415);
         ofTranslate(-(obj->getX()),-(obj->getY()),0);
-        card.draw(obj->getX()-(0.07/2),obj->getY()-(0.098/4),0.07,0.098);
+        card.draw(obj->getX()-(0.07/2),obj->getY()-(0.098/4),0.08,0.11);
         ofPopMatrix();
     }
     
 }
-
-/*void Game::update()
-{
-    for(int i=0; i<4; i++)
-    {
-        for (int j=0; j<2; j++)
-        {
-            ofRectangle rect=Players[i].Hand[j].area;
-            bool on=false;
-            for( map<int,tuio::DirectObject*>::iterator it=objects.begin(); it!=objects.end(); ++it)
-            {
-                if(!on)
-                {
-                    DirectObject * obj = it->second;
-                    if(obj->getX()>rect.x&&obj->getX()<rect.x+rect.width&&obj->getY()>rect.y&&obj->getY()<rect.y+rect.height)
-                    {
-                        Players[i].Hand[j].covered=false;
-                        on=true;
-                    }
-                    else
-                    {
-                        Players[i].Hand[j].covered=true;
-                    }
-                }
-            }
-        }
-    }
-}*/
 
 int Game::GetRandomCard()
 {

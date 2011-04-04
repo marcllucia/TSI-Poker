@@ -34,7 +34,7 @@ class Card : public OnTable < CanDirectObjects < Graphic > >
     virtual void newObject(tuio::DirectObject * object)
     {
 
-        if(object->getX()>area.x&&object->getX()<area.x+area.width/4&&object->getY()>area.y&&object->getY()<area.y+area.height)
+        if(object->getX()>area.x&&object->getX()<area.x+area.width&&object->getY()>area.y&&object->getY()<area.y+area.height)
         {
             objects[object->f_id]=object;
         }
@@ -47,7 +47,7 @@ class Card : public OnTable < CanDirectObjects < Graphic > >
     
     virtual void updateObject(tuio::DirectObject * object)
     {
-        if(object->getX()>area.x&&object->getX()<area.x+area.width/4&&object->getY()>area.y&&object->getY()<area.y+area.height)
+        if(object->getX()>area.x&&object->getX()<area.x+area.width&&object->getY()>area.y&&object->getY()<area.y+area.height)
         {
             objects[object->f_id]=object;
         }

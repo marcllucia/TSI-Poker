@@ -189,6 +189,7 @@ void testApp::Setup(){
     //new fons();
     //new TestMyDoubleTap();
 
+    new Game();
     //new TestMyTap();
 }
 
