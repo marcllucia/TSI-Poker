@@ -16,12 +16,6 @@
 using namespace tuio;
 
 
-class TestMyDoubleTap : public OnTable < CanMyDoubleTap < Graphic > >
-{
-    //Interface redefined
-    virtual void MyDoubleTap(float a, float b){std::cout <<"DoubleTap! " << a << " " << b << std::endl;}
-};
-
 class TestMyTap : public OnTable < CanMyTap < Graphic > >
 {
     //Interface redefined

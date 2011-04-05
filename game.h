@@ -27,15 +27,17 @@ class Game : public OnTable < CanDirectObjects < Graphic > >
     TableCard Cards[5];
 	Player Players[4];
 	int numPlayers;
-	int dealer;
+	int smallBlind;
+    int money;
     std::map<int, tuio::DirectObject*> objects;
 
 
     Game();
 
     void DealCards();
-    void InitializePlayerCards();
+    void InitializePlayers();
     int GetRandomCard();
+    void StartGame();
 
     virtual void newObject(tuio::DirectObject * object)
     {

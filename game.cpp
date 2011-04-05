@@ -7,6 +7,7 @@
 
 Game::Game()
 {
+    numPlayers=4;
     srand((unsigned)time(0));
 
     //Inicialitzem les textures
@@ -71,8 +72,10 @@ Game::Game()
     }
     DealCards();
    
-    InitializePlayerCards();
-    dealer=rand() % 4;
+    InitializePlayers();
+    smallBlind=rand() % 4;
+    
+    StartGame();
 
 }
 
@@ -92,7 +95,7 @@ void Game::DealCards()
 
 }
 
-void Game::InitializePlayerCards()
+void Game::InitializePlayers()
 {
     Players[0].Hand[0].area.set(0.405,0.025,0.07,0.09777777777777777);
     Players[0].Hand[0].texture.loadImage(textureData[Players[0].Hand[0].idCard]);
@@ -116,14 +119,32 @@ void Game::InitializePlayerCards()
     
     Cards[0].texture.loadImage(textureData[Cards[0].idCard]);
     Cards[0].area.set(0,0,0.098,0.07);
+    
     Cards[1].texture.loadImage(textureData[Cards[1].idCard]);
     Cards[1].area.set(0.085,0,0.098,0.07);
+    
     Cards[2].texture.loadImage(textureData[Cards[2].idCard]);
     Cards[2].area.set(0.17,0,0.098,0.07);
+    
     Cards[3].texture.loadImage(textureData[Cards[3].idCard]);
     Cards[3].area.set(0.255,0,0.098,0.07);
+    
     Cards[4].texture.loadImage(textureData[Cards[4].idCard]);
     Cards[4].area.set(0.34,0,0.098,0.07);
+    
+    Players[0].reactZone.set(0.2,0,0.6,0.3);
+    Players[1].reactZone.set(0.7,0.2,0.3,0.6);
+    Players[2].reactZone.set(0.2,0.7,0.6,0.3);
+    Players[3].reactZone.set(0,0.2,0.3,0.6);
+    
+    for (int i=0; i<4; i++)
+    {
+        Players[i].money=1000;
+        Players[i].playing=true;
+    }
+   
+    
+
 }
 
 
@@ -149,4 +170,39 @@ int Game::GetRandomCard()
     int id=Deck[index];
     Deck.erase(Deck.begin()+index);
     return id;
+}
+
+void Game::StartGame()
+{
+    Players[smallBlind].money-=10;
+    if(smallBlind+1==numPlayers)
+    {
+        Players[0].money-=100;
+    }
+    else
+    {
+        Players[smallBlind+1].money-=20;
+    }
+    
+    if(smallBlind+2==numPlayers)
+    {
+        Players[0].active=true;
+    }
+    else
+    {
+        Players[smallBlind+2].active=true;
+    }
+
+    
+    //while(true)
+    {
+        for(int i=0; i<4; i++)
+        {
+            std::cout<<"PLAYER "<<i<<" DINERS: "<<Players[i].money<<std::endl;
+            std::cout<<"PLAYER "<<i<<" ACTIVE: "<<Players[i].active<<std::endl;
+        }
+        
+    }
+    
+
 }
