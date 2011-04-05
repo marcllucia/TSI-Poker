@@ -73,10 +73,9 @@ Game::Game()
     DealCards();
    
     InitializePlayers();
-    smallBlind=rand() % 4;
+    turn=rand() % 4;
     
     StartGame();
-
 }
 
 void Game::DealCards()
@@ -142,7 +141,13 @@ void Game::InitializePlayers()
         Players[i].money=1000;
         Players[i].playing=true;
     }
-   
+    
+    Players[0].zone.setPoint(0.33,0.074);
+    Players[1].zone.setPoint(1-0.074,0.33);
+    Players[2].zone.setPoint(1-0.33,1-0.074);
+    Players[3].zone.setPoint(0.074,1-0.33);
+
+
     
 
 }
@@ -160,8 +165,32 @@ void Game::draw()
         ofTranslate(-(obj->getX()),-(obj->getY()),0);
         card.draw(obj->getX()-(0.07/2),obj->getY()-(0.098/4),0.08,0.11);
         ofPopMatrix();
+    }    
+}
+
+void Game::update()
+{
+   // std::cout<<"Turn Player "<<turn<<std::endl;
+    for(int i=0; i<4; i++)
+    {
+        if(turn==i)
+        {
+         
+            if(!Players[i].active)
+            {
+                turn++;
+                if(turn==numPlayers)
+                {
+                    turn=0;
+                }
+                
+                Players[turn].active=true;
+                Players[turn].zone.increment=0.0002;
+
+            }
+            
+        }
     }
-    
 }
 
 int Game::GetRandomCard()
@@ -174,35 +203,29 @@ int Game::GetRandomCard()
 
 void Game::StartGame()
 {
-    Players[smallBlind].money-=10;
-    if(smallBlind+1==numPlayers)
+    Players[turn].money-=10;
+    turn++;
+    if(turn==numPlayers)
     {
-        Players[0].money-=100;
+        turn=0;
     }
     else
     {
-        Players[smallBlind+1].money-=20;
+        Players[turn].money-=20;
     }
+    turn++;
     
-    if(smallBlind+2==numPlayers)
+    if(turn==numPlayers)
     {
-        Players[0].active=true;
+        turn=0;
     }
     else
     {
-        Players[smallBlind+2].active=true;
-    }
-
-    
-    //while(true)
-    {
-        for(int i=0; i<4; i++)
-        {
-            std::cout<<"PLAYER "<<i<<" DINERS: "<<Players[i].money<<std::endl;
-            std::cout<<"PLAYER "<<i<<" ACTIVE: "<<Players[i].active<<std::endl;
-        }
-        
+        Players[turn].active=true;
+        Players[turn].zone.increment=0.0002;
     }
     
+    money=10+20;
+    bet=20;
 
 }

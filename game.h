@@ -29,6 +29,8 @@ class Game : public OnTable < CanDirectObjects < Graphic > >
 	int numPlayers;
 	int smallBlind;
     int money;
+    int bet;
+    int turn;
     std::map<int, tuio::DirectObject*> objects;
 
 
@@ -53,7 +55,7 @@ class Game : public OnTable < CanDirectObjects < Graphic > >
     }
 
     void draw();
-    //void update();
+    void update();
 };
 
 

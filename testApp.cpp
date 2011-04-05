@@ -1,5 +1,6 @@
 #include "testApp.h"
 #include "game.h"
+#include "cashZone.h"
 
 #include "CursorFeedback.hpp"
 #include "FigureFeedback.hpp"
@@ -164,8 +165,11 @@ class fons: public Graphic{
     fons():Graphic(110){}
   void draw(){
 
-        ofSetColor(10,100,10);
-        ofCircle(0.5,0.5,0.5);
+        //ofSetColor(10,100,10);
+      ofImage board;
+      board.loadImage("images/board.jpg");
+      board.draw(0,0,1,1);
+        //ofCircle(0.5,0.5,0.5);
   }
 
 
@@ -180,7 +184,7 @@ void testApp::Setup(){
     //new Ball();
 
     //new Ball(0.2,0.2);
-    //new fons();
+    new fons();
     //new TestMyDoubleTap();
 
     new Game();
