@@ -15,7 +15,7 @@
 
 
 
-class Player : public OnTable < CanMyDoubleTap < Graphic > >{
+class Player : public OnTable < CanMyDoubleTap < CanDirectObjects < Graphic > > >{
 
 	public:
 	int idPlayer;
@@ -41,6 +41,22 @@ class Player : public OnTable < CanMyDoubleTap < Graphic > >{
             zone.increment=0;
         }
     }
+    
+    virtual void newObject(tuio::DirectObject * object)
+    {
+        bet=zone.sum;
+    }
+    virtual void removeObject(tuio::DirectObject * object)
+    {
+    }
+    
+    virtual void updateObject(tuio::DirectObject * object)
+    {
+        bet=zone.sum;
+        std::cout<<"APOSTA: "<<bet<<std::endl;
+
+    }
+
     
 
 };

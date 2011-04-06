@@ -8,6 +8,7 @@ CashZone::CashZone()
     
     radi=0.04;
     increment=0;
+    sum=0;
     
 }
 
