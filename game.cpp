@@ -96,24 +96,24 @@ void Game::DealCards()
 
 void Game::InitializePlayers()
 {
-    Players[0].Hand[0].area.set(0.405,0.025,0.07,0.09777777777777777);
+    Players[0].Hand[0].area.set(0.405,0.040,0.07,0.098);
     Players[0].Hand[0].texture.loadImage(textureData[Players[0].Hand[0].idCard]);
-    Players[0].Hand[1].area.set(0.525,0.025,0.07,0.09777777777777777);
+    Players[0].Hand[1].area.set(0.525,0.040,0.07,0.098);
     Players[0].Hand[1].texture.loadImage(textureData[Players[0].Hand[1].idCard]);
 
-    Players[1].Hand[0].area.set(0.025,0.405,0.09777777777777777,0.07);
+    Players[1].Hand[0].area.set(0.040,0.405,0.098,0.07);
     Players[1].Hand[0].texture.loadImage(textureData[Players[1].Hand[0].idCard]);
-    Players[1].Hand[1].area.set(0.025,0.525,0.09777777777777777,0.07);
+    Players[1].Hand[1].area.set(0.040,0.525,0.098,0.07);
     Players[1].Hand[1].texture.loadImage(textureData[Players[1].Hand[1].idCard]);
 
-    Players[2].Hand[0].area.set(0.405,1-0.09777777777777777-0.025,0.07,0.09777777777777777);
+    Players[2].Hand[0].area.set(0.405,1-0.098-0.040,0.07,0.09777777777777777);
     Players[2].Hand[0].texture.loadImage(textureData[Players[2].Hand[0].idCard]);
-    Players[2].Hand[1].area.set(0.525,1-0.09777777777777777-0.025,0.07,0.09777777777777777);
+    Players[2].Hand[1].area.set(0.525,1-0.098-0.040,0.07,0.09777777777777777);
     Players[2].Hand[1].texture.loadImage(textureData[Players[2].Hand[1].idCard]);
 
-    Players[3].Hand[0].area.set(1-0.09777777777777777-0.025,0.405,0.09777777777777777,0.07);
+    Players[3].Hand[0].area.set(1-0.098-0.040,0.405,0.098,0.07);
     Players[3].Hand[0].texture.loadImage(textureData[Players[3].Hand[0].idCard]);
-    Players[3].Hand[1].area.set(1-0.09777777777777777-0.025,0.525,0.09777777777777777,0.07);
+    Players[3].Hand[1].area.set(1-0.098-0.040,0.525,0.098,0.07);
     Players[3].Hand[1].texture.loadImage(textureData[Players[3].Hand[1].idCard]);
     
     Cards[0].texture.loadImage(textureData[Cards[0].idCard]);
@@ -142,14 +142,15 @@ void Game::InitializePlayers()
         Players[i].playing=true;
     }
     
-    Players[0].zone.setPoint(0.33,0.074);
-    Players[1].zone.setPoint(1-0.074,0.33);
-    Players[2].zone.setPoint(1-0.33,1-0.074);
-    Players[3].zone.setPoint(0.074,1-0.33);
-
-
+    Players[0].zone.setPoint(0.33,0.089);
+    Players[0].zone.chipTexture.loadImage("images/pica-chip.png");
+    Players[1].zone.setPoint(1-0.089,0.33);
+    Players[1].zone.chipTexture.loadImage("images/cor-chip.png");
+    Players[2].zone.setPoint(1-0.33,1-0.089);
+    Players[2].zone.chipTexture.loadImage("images/trebol-chip.png");
+    Players[3].zone.setPoint(0.089,1-0.33);
+    Players[3].zone.chipTexture.loadImage("images/rombo-chip.png");
     
-
 }
 
 
@@ -185,7 +186,7 @@ void Game::update()
                 }
                 
                 Players[turn].active=true;
-                Players[turn].zone.increment=0.0002;
+                Players[turn].zone.increment=0.00075;
 
             }
             

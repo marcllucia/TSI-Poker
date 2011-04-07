@@ -27,6 +27,8 @@ Card::Card(const Card&)
 
 void Card::draw()
 {
+    ofEnableAlphaBlending();
+
     if(!objects.empty())
     {
         if(area.width>area.height)
@@ -46,10 +48,25 @@ void Card::draw()
     else
     {
         ofImage back;
-        back.loadImage("back.jpg");
-        back.draw(area.x,area.y,area.width,area.height);
+        back.loadImage("images/back.png");
         
-    }    
+        if(area.width>area.height)
+        {
+            ofPushMatrix();
+            ofTranslate(area.x+area.width/2,area.y+area.height/2,0);
+            ofRotateZ(-90);
+            ofTranslate(-(area.x+area.height/2),-(area.y+area.width/2),0);
+            back.draw(area.x,area.y,area.height,area.width);
+            ofPopMatrix();
+        }
+        else
+        {
+            back.draw(area.x,area.y,area.width,area.height);
+        }    
+        
+    }
+    ofDisableAlphaBlending();
+
 }
 
 

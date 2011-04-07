@@ -29,6 +29,7 @@ TableCard::TableCard(const TableCard&)
 
 void TableCard::draw()
 {
+    ofEnableAlphaBlending();
     if(!covered)
     {
         ofPushMatrix();
@@ -41,7 +42,7 @@ void TableCard::draw()
     else
     {
         ofImage back;
-        back.loadImage("back.jpg");
+        back.loadImage("images/back.png");
         ofPushMatrix();
         ofTranslate(-0.0247487373+0.5-0.120208153,-0.0247487373+0.5-0.120208153,0);
         ofRotateZ(45);
@@ -49,6 +50,8 @@ void TableCard::draw()
         back.draw(area.x,area.y,area.height,area.width);
         ofPopMatrix();
     }
+    ofDisableAlphaBlending();
+
 }
 
 

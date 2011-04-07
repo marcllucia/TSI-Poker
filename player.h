@@ -21,6 +21,7 @@ class Player : public OnTable < CanMyDoubleTap < CanDirectObjects < Graphic > > 
 	int idPlayer;
 	int money;
     int bet;
+    float sum;
     bool active;
     bool playing;
     Card Hand[2];
@@ -38,13 +39,17 @@ class Player : public OnTable < CanMyDoubleTap < CanDirectObjects < Graphic > > 
         {
             std::cout <<"DoubleTap! " << a << " " << b << std::endl;
             active=false;
+            
+            zone.radi=0.039;
             zone.increment=0;
+            
         }
     }
     
     virtual void newObject(tuio::DirectObject * object)
     {
-        bet=zone.sum;
+        bet=zone.sum*10;
+        bet=bet*5;
     }
     virtual void removeObject(tuio::DirectObject * object)
     {
@@ -52,8 +57,27 @@ class Player : public OnTable < CanMyDoubleTap < CanDirectObjects < Graphic > > 
     
     virtual void updateObject(tuio::DirectObject * object)
     {
-        bet=zone.sum;
+        
+        bet=zone.sum*10;
+        bet=bet*5;
+     
+        if(bet>money)
+        {
+            bet=money;
+            zone.sum=sum;
+        }
+        else if(bet<0)
+        {
+            bet=0;
+            zone.sum=sum;
+        }
+        else
+        {
+            sum=zone.sum;
+        }
+      
         std::cout<<"APOSTA: "<<bet<<std::endl;
+
 
     }
 
