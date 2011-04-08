@@ -1,6 +1,6 @@
 /*
  
-Gest Per tirar les Cartes
+ Gest Per tirar les Cartes
  
  SendCards
  */
@@ -24,7 +24,7 @@ namespace tuio
     // 2n argument: MËtode de la interfÌcie que es cridar‡
     // 3r argument: Llista dels t1pus dels arguments
     
-    SimpleDeclareEvent(CanSendCards,SendCards,float,float);
+    SimpleDeclareEvent(CanSendCards,SendCards,float,float,float,float,float,float);
     
     
     //******************************************************************
@@ -47,6 +47,8 @@ namespace tuio
         float x1_i, y1_i, x1_o, y1_o;
         float x2_i, y2_i, x2_o, y2_o;
         float t1,t2;
+        float v1, v2;
+        float aux, aux2;
         
         std::list<TEvent *> & events;
         
@@ -54,7 +56,7 @@ namespace tuio
         
         virtual void newCursor(DirectFinger * f)
         {
-          
+            
             if(estat == mort)
             {
                 id_cursor1 = f->s_id;
@@ -88,13 +90,6 @@ namespace tuio
             
             if (estat == onefinger and id_cursor1 == f->s_id)
             {
-            /*    x1_o = f->getX();
-                y1_o = f->getY();
-                if(x1_i != x1_o and y1_i != y1_o)
-                {
-                    SimpleCallEvent(CanSendCards,SendCards,(f->getX(),f->getY()));
-                
-                }*/
                 estat = mort;
             }
             else if (estat == twofinger and ((id_cursor2 == f->s_id) or (id_cursor1 == f->s_id)))
@@ -105,6 +100,10 @@ namespace tuio
                     x1_o = f->getX();
                     y1_o = f->getY();
                     t1 = ofGetElapsedTimef();
+                    aux = x1_o - x1_i;
+                    aux2 = y1_o - y1_i;
+                    aux = sqrt(pow(aux,2) + pow(aux2,2));
+                    v1 = aux/t1;
                     estat = oneleft;
                 }
                 else if(id_cursor2 == f->s_id)
@@ -113,6 +112,11 @@ namespace tuio
                     x2_o = f->getX();
                     y2_o = f->getY();
                     t2 = ofGetElapsedTimef();
+                    aux = x2_o - x2_i;
+                    aux2 = y2_o - y2_i;
+                    aux = sqrt(pow(aux,2) + pow(aux2,2));
+                    v2 = aux/t2;
+                    
                     estat = oneleft;
                 }
             }
@@ -121,22 +125,30 @@ namespace tuio
                 if(id_cursor1 == f->s_id)
                 {
                     t1 = ofGetElapsedTimef();
-                    if(f->getDistance(x2_o,y2_o)<0.1/* and abs(t1-t2) < 0.2*/)
+                    if(f->getDistance(x2_o,y2_o)<0.2)
                     {
-                        SimpleCallEvent(CanSendCards,SendCards,(f->getX(),f->getY()));
+                        aux = x1_o - x1_i;
+                        aux2 = y1_o - y1_i;
+                        aux = sqrt(pow(aux,2) + pow(aux2,2));
+                        v1 = aux/t1;
+                        SimpleCallEvent(CanSendCards,SendCards,(v1,v2,x1_i,y1_i,x2_i,y2_i));
                     }
                 }
                 else if(id_cursor2 == f->s_id)
                 {
                     t2 = ofGetElapsedTimef();
-                    if(f->getDistance(x1_o,y1_o)<0.1/* and abs(t2-t1) < 0.2*/)
+                    if(f->getDistance(x1_o,y1_o)<0.2/* and abs(t2-t1) < 0.2*/)
                     {
-                        SimpleCallEvent(CanSendCards,SendCards,(f->getX(),f->getY()));
+                        aux = x2_o - x2_i;
+                        aux2 = y2_o - y2_i;
+                        aux = sqrt(pow(aux,2) + pow(aux2,2));
+                        v2 = aux/t2;
+                        SimpleCallEvent(CanSendCards,SendCards,(v1,v2,x1_i,y1_i,x2_i,y2_i));
                     }
                 }
                 estat = mort;
             }
-        
+            
         }
     };
     
@@ -212,7 +224,7 @@ namespace tuio
         //***HAN DE SER VIRTUALS***
         
         //Interface redefined
-        virtual void SendCards(float x, float y){}
+        virtual void SendCards(float v1, float v2,float x1, float y1, float x2, float y2){}
         
         
         

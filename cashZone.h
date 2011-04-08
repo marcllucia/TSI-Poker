@@ -26,7 +26,7 @@ class CashZone  : public OnTable < CanDirectObjects <  Graphic > >
     void setPoint(float xx, float yy);
     void draw();
     void update();
-    
+
     virtual void newObject(tuio::DirectObject * object)
     {
         float distance=sqrt(pow((object->getX()-x),2)+pow((object->getY()-y),2));

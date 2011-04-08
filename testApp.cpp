@@ -178,7 +178,7 @@ class fons: public Graphic{
 
 //--------------------------------------------------------------
 void testApp::Setup(){
-    //new CursorFeedback();
+    new CursorFeedback();
     //new FigureFeedback();
     //new TapFeedback();
     //new Ball();

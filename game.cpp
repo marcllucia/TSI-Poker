@@ -184,26 +184,19 @@ void Game::draw()
 
 void Game::update()
 {
-   // std::cout<<"Turn Player "<<turn<<std::endl;
-    for(int i=0; i<4; i++)
-    {
-        if(turn==i)
-        {
-         
-            if(!Players[i].active)
-            {
-                turn++;
-                if(turn==numPlayers)
-                {
-                    turn=0;
-                }
-                
-                Players[turn].active=true;
-                Players[turn].zone.increment=0.00075;
 
-            }
-            
+    if(!Players[turn].playing or !Players[turn].active)
+    {
+        Players[turn].active=false;
+        Players[turn].zone.increment=0;
+        Players[turn].zone.radi=0.039;
+        turn++;
+        if(turn==numPlayers)
+        {
+            turn=0;
         }
+        Players[turn].active=true;
+        Players[turn].zone.increment=0.00075;
     }
 }
 

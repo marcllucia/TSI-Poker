@@ -11,6 +11,7 @@
 #include "InputGestureMyTap.hpp"
 
 #include <vector>
+#include <cmath>
 
 using namespace std;
 using namespace tuio;
@@ -20,6 +21,7 @@ class Card : public OnTable < CanDirectObjects < Graphic > >
 {
 	public:
 	int idCard;
+    float angle;
 	ofRectangle area;
     ofRectangle reactZone;
 	ofImage texture;
@@ -35,7 +37,7 @@ class Card : public OnTable < CanDirectObjects < Graphic > >
     virtual void newObject(tuio::DirectObject * object)
     {
 
-        if(object->getX()>reactZone.x&&object->getX()<reactZone.x+reactZone.width&&object->getY()>reactZone.y&&object->getY()<reactZone.y+reactZone.height)
+        if(object->getX()>reactZone.x&&object->getX()<reactZone.x+reactZone.width&&object->getY()>reactZone.y&&object->getY()<reactZone.y+reactZone.height&&(object->angle>0&&object->angle<pi/8))
         {
             objects[object->f_id]=object;
         }
@@ -48,7 +50,7 @@ class Card : public OnTable < CanDirectObjects < Graphic > >
     
     virtual void updateObject(tuio::DirectObject * object)
     {
-        if(object->getX()>reactZone.x&&object->getX()<reactZone.x+reactZone.width&&object->getY()>reactZone.y&&object->getY()<reactZone.y+reactZone.height)
+        if(object->getX()>reactZone.x&&object->getX()<reactZone.x+reactZone.width&&object->getY()>reactZone.y&&object->getY()<reactZone.y+reactZone.height&&(object->angle>=0&&object->angle<pi/8))
         {
             objects[object->f_id]=object;
         }

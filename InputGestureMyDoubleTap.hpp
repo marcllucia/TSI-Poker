@@ -97,8 +97,8 @@ class MEMyDoubleTap
         {
             //comprovem que és DoubleTap
 
-            if( f->getDistance(x2,y2) < 0.01
-                and (ofGetElapsedTimef() - t2) < 0.2)
+            if( f->getDistance(x2,y2) < 0.02
+                and (ofGetElapsedTimef() - t2) < 0.3)
             {
                 if(f->getDistance(x1,y1)<0.1 and abs(t1-t2) < 0.5)
                 {
