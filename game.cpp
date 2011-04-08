@@ -98,23 +98,36 @@ void Game::InitializePlayers()
 {
     Players[0].Hand[0].area.set(0.405,0.040,0.07,0.098);
     Players[0].Hand[0].texture.loadImage(textureData[Players[0].Hand[0].idCard]);
+    Players[0].Hand[0].reactZone.set(Players[0].Hand[0].area.x,Players[0].Hand[0].area.y+Players[0].Hand[0].area.height/4*3,Players[0].Hand[0].area.width,Players[0].Hand[0].area.height/4);
+    
     Players[0].Hand[1].area.set(0.525,0.040,0.07,0.098);
     Players[0].Hand[1].texture.loadImage(textureData[Players[0].Hand[1].idCard]);
+    Players[0].Hand[1].reactZone.set(Players[0].Hand[1].area.x,Players[0].Hand[1].area.y+Players[0].Hand[1].area.height/4*3,Players[0].Hand[1].area.width,Players[0].Hand[1].area.height/4);
+    
+    Players[1].Hand[0].area.set(1-0.098-0.040,0.405,0.098,0.07);
+    Players[1].Hand[0].texture.loadImage(textureData[Players[3].Hand[0].idCard]);
+    Players[1].Hand[0].reactZone.set(Players[1].Hand[0].area.x,Players[1].Hand[0].area.y,Players[1].Hand[0].area.width/4,Players[1].Hand[0].area.height);
+    
+    Players[1].Hand[1].area.set(1-0.098-0.040,0.525,0.098,0.07);
+    Players[1].Hand[1].texture.loadImage(textureData[Players[3].Hand[1].idCard]);
+    Players[1].Hand[1].reactZone.set(Players[1].Hand[1].area.x,Players[1].Hand[1].area.y,Players[1].Hand[1].area.width/4,Players[1].Hand[1].area.height);
 
-    Players[1].Hand[0].area.set(0.040,0.405,0.098,0.07);
-    Players[1].Hand[0].texture.loadImage(textureData[Players[1].Hand[0].idCard]);
-    Players[1].Hand[1].area.set(0.040,0.525,0.098,0.07);
-    Players[1].Hand[1].texture.loadImage(textureData[Players[1].Hand[1].idCard]);
-
-    Players[2].Hand[0].area.set(0.405,1-0.098-0.040,0.07,0.09777777777777777);
+    Players[2].Hand[0].area.set(0.405,1-0.098-0.040,0.07,0.098);
     Players[2].Hand[0].texture.loadImage(textureData[Players[2].Hand[0].idCard]);
-    Players[2].Hand[1].area.set(0.525,1-0.098-0.040,0.07,0.09777777777777777);
-    Players[2].Hand[1].texture.loadImage(textureData[Players[2].Hand[1].idCard]);
+    Players[2].Hand[0].reactZone.set(Players[2].Hand[0].area.x,Players[2].Hand[0].area.y,Players[2].Hand[0].area.width,Players[2].Hand[0].area.height/4);
 
-    Players[3].Hand[0].area.set(1-0.098-0.040,0.405,0.098,0.07);
-    Players[3].Hand[0].texture.loadImage(textureData[Players[3].Hand[0].idCard]);
-    Players[3].Hand[1].area.set(1-0.098-0.040,0.525,0.098,0.07);
-    Players[3].Hand[1].texture.loadImage(textureData[Players[3].Hand[1].idCard]);
+    Players[2].Hand[1].area.set(0.525,1-0.098-0.040,0.07,0.098);
+    Players[2].Hand[1].texture.loadImage(textureData[Players[2].Hand[1].idCard]);
+    Players[2].Hand[1].reactZone.set(Players[2].Hand[1].area.x,Players[2].Hand[1].area.y,Players[2].Hand[1].area.width,Players[2].Hand[1].area.height/4);
+    
+    Players[3].Hand[0].area.set(0.040,0.405,0.098,0.07);
+    Players[3].Hand[0].texture.loadImage(textureData[Players[1].Hand[0].idCard]);
+    Players[3].Hand[0].reactZone.set(Players[3].Hand[0].area.x+Players[3].Hand[0].area.width/4*3,Players[3].Hand[0].area.y,Players[3].Hand[0].area.width/4,Players[3].Hand[0].area.height);
+    
+    Players[3].Hand[1].area.set(0.040,0.525,0.098,0.07);
+    Players[3].Hand[1].texture.loadImage(textureData[Players[1].Hand[1].idCard]);
+    Players[3].Hand[1].reactZone.set(Players[3].Hand[1].area.x+Players[3].Hand[1].area.width/4*3,Players[3].Hand[1].area.y,Players[3].Hand[1].area.width/4,Players[3].Hand[1].area.height);    
+
     
     Cards[0].texture.loadImage(textureData[Cards[0].idCard]);
     Cards[0].area.set(0,0,0.098,0.07);

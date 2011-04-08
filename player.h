@@ -11,11 +11,11 @@
 #include "InputGestureBasicObjects.hpp"
 #include "InputGestureBasicFingers.hpp"
 #include "InputGestureMyDoubleTap.hpp"
-#include "InputGestureMyTap.hpp"
+#include "InputGestureSendCards.hpp"
 
 
 
-class Player : public OnTable < CanMyDoubleTap < CanDirectObjects < Graphic > > >{
+class Player : public OnTable < CanMyDoubleTap < CanSendCards < CanDirectObjects < Graphic > > > >{
 
 	public:
 	int idPlayer;
@@ -44,6 +44,11 @@ class Player : public OnTable < CanMyDoubleTap < CanDirectObjects < Graphic > > 
             zone.increment=0;
             
         }
+    }
+    
+    virtual void SendCards(float a, float b)
+    {
+        std::cout <<"SendCards! " << a << " " << b << std::endl;
     }
     
     virtual void newObject(tuio::DirectObject * object)

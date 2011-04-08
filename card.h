@@ -21,6 +21,7 @@ class Card : public OnTable < CanDirectObjects < Graphic > >
 	public:
 	int idCard;
 	ofRectangle area;
+    ofRectangle reactZone;
 	ofImage texture;
 	bool covered;
     std::map<int, tuio::DirectObject*> objects;
@@ -34,7 +35,7 @@ class Card : public OnTable < CanDirectObjects < Graphic > >
     virtual void newObject(tuio::DirectObject * object)
     {
 
-        if(object->getX()>area.x&&object->getX()<area.x+area.width&&object->getY()>area.y&&object->getY()<area.y+area.height)
+        if(object->getX()>reactZone.x&&object->getX()<reactZone.x+reactZone.width&&object->getY()>reactZone.y&&object->getY()<reactZone.y+reactZone.height)
         {
             objects[object->f_id]=object;
         }
@@ -47,7 +48,7 @@ class Card : public OnTable < CanDirectObjects < Graphic > >
     
     virtual void updateObject(tuio::DirectObject * object)
     {
-        if(object->getX()>area.x&&object->getX()<area.x+area.width&&object->getY()>area.y&&object->getY()<area.y+area.height)
+        if(object->getX()>reactZone.x&&object->getX()<reactZone.x+reactZone.width&&object->getY()>reactZone.y&&object->getY()<reactZone.y+reactZone.height)
         {
             objects[object->f_id]=object;
         }
