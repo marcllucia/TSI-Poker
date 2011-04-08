@@ -71,10 +71,10 @@ Game::Game()
          Deck[i]=i;
     }
     DealCards();
-   
+
     InitializePlayers();
     turn=rand() % 4;
-    
+
     StartGame();
 }
 
@@ -86,7 +86,7 @@ void Game::DealCards()
         Players[i].Hand[1].idCard=GetRandomCard();
         std::cout <<"Player " << i<<": "<< Players[i].Hand[0].idCard << " , "<<Players[i].Hand[1].idCard<<std::endl;
     }
-    
+
     for (int i=0;i<5;i++)
     {
         Cards[i].idCard=GetRandomCard();
@@ -99,15 +99,15 @@ void Game::InitializePlayers()
     Players[0].Hand[0].area.set(0.405,0.040,0.07,0.098);
     Players[0].Hand[0].texture.loadImage(textureData[Players[0].Hand[0].idCard]);
     Players[0].Hand[0].reactZone.set(Players[0].Hand[0].area.x,Players[0].Hand[0].area.y+Players[0].Hand[0].area.height/4*3,Players[0].Hand[0].area.width,Players[0].Hand[0].area.height/4);
-    
+
     Players[0].Hand[1].area.set(0.525,0.040,0.07,0.098);
     Players[0].Hand[1].texture.loadImage(textureData[Players[0].Hand[1].idCard]);
     Players[0].Hand[1].reactZone.set(Players[0].Hand[1].area.x,Players[0].Hand[1].area.y+Players[0].Hand[1].area.height/4*3,Players[0].Hand[1].area.width,Players[0].Hand[1].area.height/4);
-    
+
     Players[1].Hand[0].area.set(1-0.098-0.040,0.405,0.098,0.07);
     Players[1].Hand[0].texture.loadImage(textureData[Players[3].Hand[0].idCard]);
     Players[1].Hand[0].reactZone.set(Players[1].Hand[0].area.x,Players[1].Hand[0].area.y,Players[1].Hand[0].area.width/4,Players[1].Hand[0].area.height);
-    
+
     Players[1].Hand[1].area.set(1-0.098-0.040,0.525,0.098,0.07);
     Players[1].Hand[1].texture.loadImage(textureData[Players[3].Hand[1].idCard]);
     Players[1].Hand[1].reactZone.set(Players[1].Hand[1].area.x,Players[1].Hand[1].area.y,Players[1].Hand[1].area.width/4,Players[1].Hand[1].area.height);
@@ -119,42 +119,42 @@ void Game::InitializePlayers()
     Players[2].Hand[1].area.set(0.525,1-0.098-0.040,0.07,0.098);
     Players[2].Hand[1].texture.loadImage(textureData[Players[2].Hand[1].idCard]);
     Players[2].Hand[1].reactZone.set(Players[2].Hand[1].area.x,Players[2].Hand[1].area.y,Players[2].Hand[1].area.width,Players[2].Hand[1].area.height/4);
-    
+
     Players[3].Hand[0].area.set(0.040,0.405,0.098,0.07);
     Players[3].Hand[0].texture.loadImage(textureData[Players[1].Hand[0].idCard]);
     Players[3].Hand[0].reactZone.set(Players[3].Hand[0].area.x+Players[3].Hand[0].area.width/4*3,Players[3].Hand[0].area.y,Players[3].Hand[0].area.width/4,Players[3].Hand[0].area.height);
-    
+
     Players[3].Hand[1].area.set(0.040,0.525,0.098,0.07);
     Players[3].Hand[1].texture.loadImage(textureData[Players[1].Hand[1].idCard]);
-    Players[3].Hand[1].reactZone.set(Players[3].Hand[1].area.x+Players[3].Hand[1].area.width/4*3,Players[3].Hand[1].area.y,Players[3].Hand[1].area.width/4,Players[3].Hand[1].area.height);    
+    Players[3].Hand[1].reactZone.set(Players[3].Hand[1].area.x+Players[3].Hand[1].area.width/4*3,Players[3].Hand[1].area.y,Players[3].Hand[1].area.width/4,Players[3].Hand[1].area.height);
 
-    
+
     Cards[0].texture.loadImage(textureData[Cards[0].idCard]);
     Cards[0].area.set(0,0,0.098,0.07);
-    
+
     Cards[1].texture.loadImage(textureData[Cards[1].idCard]);
     Cards[1].area.set(0.085,0,0.098,0.07);
-    
+
     Cards[2].texture.loadImage(textureData[Cards[2].idCard]);
     Cards[2].area.set(0.17,0,0.098,0.07);
-    
+
     Cards[3].texture.loadImage(textureData[Cards[3].idCard]);
     Cards[3].area.set(0.255,0,0.098,0.07);
-    
+
     Cards[4].texture.loadImage(textureData[Cards[4].idCard]);
     Cards[4].area.set(0.34,0,0.098,0.07);
-    
+
     Players[0].reactZone.set(0.2,0,0.6,0.3);
     Players[1].reactZone.set(0.7,0.2,0.3,0.6);
     Players[2].reactZone.set(0.2,0.7,0.6,0.3);
     Players[3].reactZone.set(0,0.2,0.3,0.6);
-    
+
     for (int i=0; i<4; i++)
     {
         Players[i].money=1000;
         Players[i].playing=true;
     }
-    
+
     Players[0].zone.setPoint(0.33,0.089);
     Players[0].zone.chipTexture.loadImage("images/pica-chip.png");
     Players[1].zone.setPoint(1-0.089,0.33);
@@ -163,7 +163,7 @@ void Game::InitializePlayers()
     Players[2].zone.chipTexture.loadImage("images/trebol-chip.png");
     Players[3].zone.setPoint(0.089,1-0.33);
     Players[3].zone.chipTexture.loadImage("images/rombo-chip.png");
-    
+
 }
 
 
@@ -174,12 +174,13 @@ void Game::draw()
         DirectObject * obj = it->second;
         ofImage card;
         ofPushMatrix();
+        ofSetColor(255,255,255);
         ofTranslate(obj->getX(),obj->getY(),0);
         ofRotateZ(obj->angle*180/3.1415);
         ofTranslate(-(obj->getX()),-(obj->getY()),0);
         card.draw(obj->getX()-(0.07/2),obj->getY()-(0.098/4),0.08,0.11);
         ofPopMatrix();
-    }    
+    }
 }
 
 void Game::update()
@@ -216,22 +217,20 @@ void Game::StartGame()
     {
         turn=0;
     }
-    else
-    {
-        Players[turn].money-=20;
-    }
-    turn++;
     
+    Players[turn].money-=20;
+    
+    
+    turn++;
+
     if(turn==numPlayers)
     {
         turn=0;
     }
-    else
-    {
-        Players[turn].active=true;
-        Players[turn].zone.increment=0.0002;
-    }
     
+    Players[turn].active=true;
+    Players[turn].zone.increment=0.0002;
+
     money=10+20;
     bet=20;
 

@@ -23,16 +23,17 @@ public:
 	ofRectangle area;
 	ofImage texture;
 	bool covered;
-    
+	ofImage back;
+
     TableCard();
 	TableCard(int id);
     TableCard(const TableCard&);
-    
+
     ~TableCard();
-    
-    
+
+
     void draw();
-    
+
 };
 
 #endif

@@ -30,12 +30,12 @@ class Player : public OnTable < CanMyDoubleTap < CanSendCards < CanDirectObjects
     CashZone zone;
 
 
-    
+
     void Play();
 	Player();
-    
+
     void update();
-    
+
     virtual void MyDoubleTap(float a, float b)
     {
         if(active)
@@ -47,7 +47,7 @@ class Player : public OnTable < CanMyDoubleTap < CanSendCards < CanDirectObjects
             }
         }
     }
-    
+
     virtual void SendCards(float v1, float v2,float x1, float y1, float x2, float y2)
     {
         if(active)
@@ -69,11 +69,11 @@ class Player : public OnTable < CanMyDoubleTap < CanSendCards < CanDirectObjects
                     active=false;
                     playing=false;
                 }
-                
+
             }
         }
     }
-    
+
     virtual void newObject(tuio::DirectObject * object)
     {
         bet=zone.sum*10;
@@ -82,13 +82,13 @@ class Player : public OnTable < CanMyDoubleTap < CanSendCards < CanDirectObjects
     virtual void removeObject(tuio::DirectObject * object)
     {
     }
-    
+
     virtual void updateObject(tuio::DirectObject * object)
     {
-        
+
         bet=zone.sum*10;
         bet=bet*5;
-     
+
         if(bet>money)
         {
             bet=money;
@@ -103,13 +103,13 @@ class Player : public OnTable < CanMyDoubleTap < CanSendCards < CanDirectObjects
         {
             sum=zone.sum;
         }
-      
+
         std::cout<<"APOSTA: "<<bet<<std::endl;
 
 
     }
 
-    
+
 
 };
 

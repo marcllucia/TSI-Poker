@@ -10,6 +10,7 @@ using namespace std;
 TableCard::TableCard()
 {
     covered=true;
+     back.loadImage("images/back.png");
 }
 
 TableCard::~TableCard()
@@ -24,7 +25,7 @@ TableCard::TableCard(int id)
 
 TableCard::TableCard(const TableCard&)
 {
-    
+
 }
 
 void TableCard::draw()
@@ -33,6 +34,7 @@ void TableCard::draw()
     if(!covered)
     {
         ofPushMatrix();
+        ofSetColor(255,255,255);
         ofTranslate(-0.0247487373+0.5-0.120208153,-0.0247487373+0.5-0.120208153,0);
         ofRotateZ(45);
         ofTranslate(0,-0.049,0);
@@ -41,8 +43,8 @@ void TableCard::draw()
     }
     else
     {
-        ofImage back;
-        back.loadImage("images/back.png");
+
+       // back.loadImage("images/back.png");
         ofPushMatrix();
         ofTranslate(-0.0247487373+0.5-0.120208153,-0.0247487373+0.5-0.120208153,0);
         ofRotateZ(45);

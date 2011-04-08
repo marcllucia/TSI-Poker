@@ -25,6 +25,7 @@ class Card : public OnTable < CanDirectObjects < Graphic > >
 	ofRectangle area;
     ofRectangle reactZone;
 	ofImage texture;
+	ofImage back;
 	bool covered;
     std::map<int, tuio::DirectObject*> objects;
 
@@ -33,24 +34,24 @@ class Card : public OnTable < CanDirectObjects < Graphic > >
     Card(const Card&);
 
     ~Card();
-    
+
     virtual void newObject(tuio::DirectObject * object)
     {
 
-        if(object->getX()>reactZone.x&&object->getX()<reactZone.x+reactZone.width&&object->getY()>reactZone.y&&object->getY()<reactZone.y+reactZone.height&&(object->angle>0&&object->angle<pi/8))
+        if(object->getX()>reactZone.x&&object->getX()<reactZone.x+reactZone.width&&object->getY()>reactZone.y&&object->getY()<reactZone.y+reactZone.height&&(object->angle>0&&object->angle<M_PI/8))
         {
             objects[object->f_id]=object;
         }
     }
-    
+
     virtual void removeObject(tuio::DirectObject * object)
     {
         objects.erase(object->f_id);
     }
-    
+
     virtual void updateObject(tuio::DirectObject * object)
     {
-        if(object->getX()>reactZone.x&&object->getX()<reactZone.x+reactZone.width&&object->getY()>reactZone.y&&object->getY()<reactZone.y+reactZone.height&&(object->angle>=0&&object->angle<pi/8))
+        if(object->getX()>reactZone.x&&object->getX()<reactZone.x+reactZone.width&&object->getY()>reactZone.y&&object->getY()<reactZone.y+reactZone.height&&(object->angle>=0&&object->angle<M_PI/8))
         {
             objects[object->f_id]=object;
         }
@@ -59,9 +60,9 @@ class Card : public OnTable < CanDirectObjects < Graphic > >
             objects.erase(object->f_id);
         }
     }
-    
 
-    
+
+
     void draw();
 
 };

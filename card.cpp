@@ -8,6 +8,7 @@ using namespace std;
 Card::Card()
 {
     covered=true;
+    back.loadImage("images/back.png");
 }
 
 Card::~Card()
@@ -22,7 +23,7 @@ Card::Card(int id)
 
 Card::Card(const Card&)
 {
-    
+
 }
 
 void Card::draw()
@@ -34,6 +35,7 @@ void Card::draw()
         {
             ofEnableAlphaBlending();
             ofPushMatrix();
+            ofSetColor(255,255,255);
             ofTranslate(area.x+area.width/2,area.y+area.height/2,0);
             ofRotateZ(-90);
             ofTranslate(-(area.x+area.height/2),-(area.y+area.width/2),0);
@@ -44,18 +46,20 @@ void Card::draw()
         else
         {
             ofEnableAlphaBlending();
+            ofSetColor(255,255,255);
             texture.draw(area.x,area.y,area.width,area.height);
             ofDisableAlphaBlending();
-        }    
+        }
     }
     else
     {
-        ofImage back;
-        back.loadImage("images/back.png");
-        
+
+
+
         if(area.width>area.height)
         {
             ofEnableAlphaBlending();
+            ofSetColor(255,255,255);
             ofPushMatrix();
             ofTranslate(area.x+area.width/2,area.y+area.height/2,0);
             ofRotateZ(-90);
@@ -67,10 +71,11 @@ void Card::draw()
         else
         {
             ofEnableAlphaBlending();
+            ofSetColor(255,255,255);
             back.draw(area.x,area.y,area.width,area.height);
             ofDisableAlphaBlending();
-        }    
-        
+        }
+
     }
 
 }
