@@ -21,38 +21,40 @@ TableCard::TableCard(int id)
 {
     idCard=id;
     covered=true;
+    drawCard=true;
 }
 
 TableCard::TableCard(const TableCard&)
 {
-
+    drawCard=true;
 }
 
 void TableCard::draw()
 {
-    ofEnableAlphaBlending();
-    if(!covered)
+    if(drawCard)
     {
-        ofPushMatrix();
-        ofSetColor(255,255,255);
-        ofTranslate(-0.0247487373+0.5-0.120208153,-0.0247487373+0.5-0.120208153,0);
-        ofRotateZ(45);
-        ofTranslate(0,-0.049,0);
-        texture.draw(area.x,area.y,area.height,area.width);
-        ofPopMatrix();
+        ofEnableAlphaBlending();
+        if(!covered)
+        {
+            ofPushMatrix();
+            ofSetColor(255,255,255);
+            ofTranslate(-0.0247487373+0.5-0.120208153,-0.0247487373+0.5-0.120208153,0);
+            ofRotateZ(45);
+            ofTranslate(0,-0.049,0);
+            texture.draw(area.x,area.y,area.height,area.width);
+            ofPopMatrix();
+        }
+        else
+        {
+            ofPushMatrix();
+            ofTranslate(-0.0247487373+0.5-0.120208153,-0.0247487373+0.5-0.120208153,0);
+            ofRotateZ(45);
+            ofTranslate(0,-0.049,0);
+            back.draw(area.x,area.y,area.height,area.width);
+            ofPopMatrix();
+        }
+        ofDisableAlphaBlending();
     }
-    else
-    {
-
-       // back.loadImage("images/back.png");
-        ofPushMatrix();
-        ofTranslate(-0.0247487373+0.5-0.120208153,-0.0247487373+0.5-0.120208153,0);
-        ofRotateZ(45);
-        ofTranslate(0,-0.049,0);
-        back.draw(area.x,area.y,area.height,area.width);
-        ofPopMatrix();
-    }
-    ofDisableAlphaBlending();
 
 }
 

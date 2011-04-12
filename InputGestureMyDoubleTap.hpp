@@ -161,7 +161,7 @@ class InputGestueMyDoubleTap : public CanDirectFingers < CompositeGesture >
                 }
         llista_me.remove(NULL);
     }
-    virtual void updateCursor(DirectFinger *){}
+    virtual void updateCursor(DirectFinger *f){}
     virtual void enterCursor(DirectFinger *df){}
     virtual void exitCursor(DirectFinger *f){}
 };

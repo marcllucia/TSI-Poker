@@ -18,7 +18,7 @@ class CashZone  : public OnTable < CanDirectObjects <  Graphic > >
     public:
     float x,y,radi,increment,angle,sum;
     ofImage chipTexture;
-    ofTrueTypeFont	verdana;
+    ofTrueTypeFont	moneyText;
     std::map<int, tuio::DirectObject*> objects;
     
     CashZone();
@@ -31,7 +31,6 @@ class CashZone  : public OnTable < CanDirectObjects <  Graphic > >
     {
         float distance=sqrt(pow((object->getX()-x),2)+pow((object->getY()-y),2));
         
-        //object->
         if(distance<0.05)
         {
             angle=object->angle;

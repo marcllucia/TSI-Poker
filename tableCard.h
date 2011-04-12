@@ -23,6 +23,7 @@ public:
 	ofRectangle area;
 	ofImage texture;
 	bool covered;
+    bool drawCard;
 	ofImage back;
 
     TableCard();

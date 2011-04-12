@@ -4,9 +4,12 @@
 #include <iostream>
 #include <time.h>
 #include <cstdlib>
+#include <math.h>
+
 
 Game::Game()
 {
+    updateGame=false;
     numPlayers=4;
     srand((unsigned)time(0));
 
@@ -74,8 +77,14 @@ Game::Game()
 
     InitializePlayers();
     turn=rand() % 4;
-
+    smallBlind=turn;
     StartGame();
+    knock.loadSound("sounds/knock.wav");
+    
+    updateGame=true;
+    flop=false;
+    river=false;
+    start=0;
 }
 
 void Game::DealCards()
@@ -99,34 +108,49 @@ void Game::InitializePlayers()
     Players[0].Hand[0].area.set(0.405,0.040,0.07,0.098);
     Players[0].Hand[0].texture.loadImage(textureData[Players[0].Hand[0].idCard]);
     Players[0].Hand[0].reactZone.set(Players[0].Hand[0].area.x,Players[0].Hand[0].area.y+Players[0].Hand[0].area.height/4*3,Players[0].Hand[0].area.width,Players[0].Hand[0].area.height/4);
+    Players[0].Hand[0].tolerance=M_PI;
 
     Players[0].Hand[1].area.set(0.525,0.040,0.07,0.098);
     Players[0].Hand[1].texture.loadImage(textureData[Players[0].Hand[1].idCard]);
     Players[0].Hand[1].reactZone.set(Players[0].Hand[1].area.x,Players[0].Hand[1].area.y+Players[0].Hand[1].area.height/4*3,Players[0].Hand[1].area.width,Players[0].Hand[1].area.height/4);
+    Players[0].Hand[1].tolerance=M_PI;
+
 
     Players[1].Hand[0].area.set(1-0.098-0.040,0.405,0.098,0.07);
     Players[1].Hand[0].texture.loadImage(textureData[Players[3].Hand[0].idCard]);
     Players[1].Hand[0].reactZone.set(Players[1].Hand[0].area.x,Players[1].Hand[0].area.y,Players[1].Hand[0].area.width/4,Players[1].Hand[0].area.height);
+    Players[1].Hand[0].tolerance=3*M_PI/2;
+
 
     Players[1].Hand[1].area.set(1-0.098-0.040,0.525,0.098,0.07);
     Players[1].Hand[1].texture.loadImage(textureData[Players[3].Hand[1].idCard]);
     Players[1].Hand[1].reactZone.set(Players[1].Hand[1].area.x,Players[1].Hand[1].area.y,Players[1].Hand[1].area.width/4,Players[1].Hand[1].area.height);
+    Players[1].Hand[1].tolerance=3*M_PI/2;
+
 
     Players[2].Hand[0].area.set(0.405,1-0.098-0.040,0.07,0.098);
     Players[2].Hand[0].texture.loadImage(textureData[Players[2].Hand[0].idCard]);
     Players[2].Hand[0].reactZone.set(Players[2].Hand[0].area.x,Players[2].Hand[0].area.y,Players[2].Hand[0].area.width,Players[2].Hand[0].area.height/4);
+    Players[2].Hand[0].tolerance=0;
+
 
     Players[2].Hand[1].area.set(0.525,1-0.098-0.040,0.07,0.098);
     Players[2].Hand[1].texture.loadImage(textureData[Players[2].Hand[1].idCard]);
     Players[2].Hand[1].reactZone.set(Players[2].Hand[1].area.x,Players[2].Hand[1].area.y,Players[2].Hand[1].area.width,Players[2].Hand[1].area.height/4);
+    Players[2].Hand[1].tolerance=0;
+
 
     Players[3].Hand[0].area.set(0.040,0.405,0.098,0.07);
     Players[3].Hand[0].texture.loadImage(textureData[Players[1].Hand[0].idCard]);
     Players[3].Hand[0].reactZone.set(Players[3].Hand[0].area.x+Players[3].Hand[0].area.width/4*3,Players[3].Hand[0].area.y,Players[3].Hand[0].area.width/4,Players[3].Hand[0].area.height);
+    Players[3].Hand[0].tolerance=M_PI/2;
+
 
     Players[3].Hand[1].area.set(0.040,0.525,0.098,0.07);
     Players[3].Hand[1].texture.loadImage(textureData[Players[1].Hand[1].idCard]);
     Players[3].Hand[1].reactZone.set(Players[3].Hand[1].area.x+Players[3].Hand[1].area.width/4*3,Players[3].Hand[1].area.y,Players[3].Hand[1].area.width/4,Players[3].Hand[1].area.height);
+    Players[3].Hand[1].tolerance=M_PI/2;
+
 
 
     Cards[0].texture.loadImage(textureData[Cards[0].idCard]);
@@ -154,6 +178,20 @@ void Game::InitializePlayers()
         Players[i].money=1000;
         Players[i].playing=true;
     }
+    
+    Players[0].angle=180;
+    Players[1].angle=270;
+    Players[2].angle=0;
+    Players[3].angle=90;
+    
+    Players[0].xPos=0.05;
+    Players[0].yPos=0.06;
+    Players[1].xPos=-0.06;
+    Players[1].yPos=0.05;
+    Players[2].xPos=-0.05;
+    Players[2].yPos=-0.06;
+    Players[3].xPos=0.06;
+    Players[3].yPos=-0.05;
 
     Players[0].zone.setPoint(0.33,0.089);
     Players[0].zone.chipTexture.loadImage("images/pica-chip.png");
@@ -163,6 +201,8 @@ void Game::InitializePlayers()
     Players[2].zone.chipTexture.loadImage("images/trebol-chip.png");
     Players[3].zone.setPoint(0.089,1-0.33);
     Players[3].zone.chipTexture.loadImage("images/rombo-chip.png");
+    
+    
 
 }
 
@@ -185,20 +225,104 @@ void Game::draw()
 
 void Game::update()
 {
-
-    if(!Players[turn].playing or !Players[turn].active)
-    {
-        Players[turn].active=false;
-        Players[turn].zone.increment=0;
-        Players[turn].zone.radi=0.039;
-        turn++;
-        if(turn==numPlayers)
+    if(updateGame)
+    {      
+        if(!flop)
         {
-            turn=0;
+            Cards[0].drawCard=false;
+            Cards[1].drawCard=false;
+            Cards[2].drawCard=true;
+            Cards[3].drawCard=true;
+            Cards[4].drawCard=true;
         }
-        Players[turn].active=true;
-        Players[turn].zone.increment=0.00075;
+        else if(!river)
+        {
+            Cards[1].drawCard=true;
+        }
+
+        for(int i=0; i<4; i++)
+        {
+            Players[i].tableBet=bet;
+        }
+
+        if(!Players[turn].playing or !Players[turn].active)
+        {
+            if(Players[turn].confirmed)
+            {
+                money+=Players[turn].bet;
+                if(Players[turn].bet>bet)
+                {
+                    smallBlind=turn;
+                    firstPlayer=turn;
+                }
+                bet=Players[turn].bet+Players[turn].lastBet;
+                Players[turn].lastBet=bet;
+                Players[turn].confirmed=false;
+                
+            }
+            Players[turn].active=false;
+            Players[turn].zone.increment=0;
+            Players[turn].zone.radi=0.039;
+            turn++;
+            if(turn==numPlayers)
+            {
+                turn=0;
+            }
+            if(turn==firstPlayer)
+            {
+                //if(start%2==0)
+                {
+                    if(bet==Players[turn].lastBet)
+                    {
+                        if(river)
+                        {
+                            Cards[0].covered=false;
+                        }
+                       
+                        if(flop)
+                        {
+                            Cards[1].covered=false;
+                            Cards[0].drawCard=true;
+                        }
+                        if(start==2)
+                        {
+                            Cards[0].covered=false;
+                        }
+                        Cards[2].covered=false;
+                        Cards[3].covered=false;
+                        Cards[4].covered=false;
+                        flop=true;
+                        Players[turn].active=false;
+                        turn=smallBlind;
+                        Players[turn].active=true;
+                        firstPlayer=smallBlind;
+                        if(firstPlayer==numPlayers)
+                        {
+                            firstPlayer=0;
+                        }
+
+                    }
+                }
+                start++;
+                
+                lastBet=bet;
+            }
+            
+            if(Players[turn].lastBet==bet)
+            {
+                Players[turn].canCheck=true;
+            }
+            else
+            {
+                Players[turn].canCheck=false;
+            }
+            Players[turn].tableBet=bet;
+            Players[turn].active=true;
+            Players[turn].zone.increment=0.0002;
+        }
+
     }
+
 }
 
 int Game::GetRandomCard()
@@ -212,6 +336,8 @@ int Game::GetRandomCard()
 void Game::StartGame()
 {
     Players[turn].money-=10;
+    Players[turn].lastBet=10;
+
     turn++;
     if(turn==numPlayers)
     {
@@ -219,7 +345,7 @@ void Game::StartGame()
     }
     
     Players[turn].money-=20;
-    
+    Players[turn].lastBet=20;
     
     turn++;
 
@@ -229,9 +355,11 @@ void Game::StartGame()
     }
     
     Players[turn].active=true;
+    Players[turn].canCheck=false;
     Players[turn].zone.increment=0.0002;
+    lastBet=20;
+    firstPlayer=turn;
 
     money=10+20;
     bet=20;
-
 }

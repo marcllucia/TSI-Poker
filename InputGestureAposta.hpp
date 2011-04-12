@@ -40,12 +40,12 @@ SimpleDeclareEvent(CanAposta,Aposta,float,float,float);
 // ALERTA: noteu que no fem servir OnTable! No ens toca a nosaltres
 // definir el tipus d'àrea, si n'hi ha.
 
-class InputGestueAposta : public CanDirectObjects < CompositeGesture >
+class InputGestureAposta : public CanDirectObjects < CompositeGesture >
 {
     public:
     int id_object;
     float x1_i,y1_i,x1_o,y1_o,t1,aux,aux2, v1;
-    InputGestueAposta(){}
+    InputGestureAposta(){}
 
     //Interficie definida per la capacitat
     virtual void newObject(DirectObject * object)
@@ -73,11 +73,16 @@ class InputGestueAposta : public CanDirectObjects < CompositeGesture >
             aux = sqrt(pow(aux,2) + pow(aux2,2));
             v1 = aux/t1;
 
-            SimpleCallEvent(CanAposta,Aposta,(x1_i,y1_i,v1));
+            if(aux>0.2)
+            {
+                SimpleCallEvent(CanAposta,Aposta,(x1_i,y1_i,v1));
+            }
         }
     }
 
-    virtual void updateObject(DirectObject * object){}
+    virtual void updateObject(DirectObject * object){
+    
+    }
 };
 
 
@@ -97,7 +102,9 @@ class CanAposta: public Base
     //***HAN DE SER VIRTUALS***
 
     //Interface redefined
-    virtual void Aposta(float a, float b,float c){}
+    virtual void Aposta(float a, float b,float c){
+    
+    }
 
 
 
@@ -116,7 +123,7 @@ class CanAposta: public Base
      //   SimpleRegisterEvent(CanThrowChips, Event2);
 
         // Això va també sempre aquí, simplement registra el Input Gesture (InputGestureX)
-        Base::template registerIG<InputGestueAposta>();
+        Base::template registerIG<InputGestureAposta>();
     }
 };
 

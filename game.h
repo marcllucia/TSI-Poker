@@ -18,7 +18,7 @@
 using namespace std;
 using namespace tuio;
 
-class Game : public OnTable < CanDirectObjects < Graphic > >
+class Game : public OnTable < CanMyTap < CanDirectObjects < Graphic > > >
 {
 	public:
 
@@ -26,11 +26,18 @@ class Game : public OnTable < CanDirectObjects < Graphic > >
     std::string textureData[52];
     TableCard Cards[5];
 	Player Players[4];
+    ofSoundPlayer knock;
 	int numPlayers;
 	int smallBlind;
     int money;
     int bet;
+    int lastBet;
     int turn;
+    int firstPlayer;
+    int start;
+    bool updateGame;
+    bool flop;
+    bool river;
     std::map<int, tuio::DirectObject*> objects;
 
 
@@ -40,6 +47,12 @@ class Game : public OnTable < CanDirectObjects < Graphic > >
     void InitializePlayers();
     int GetRandomCard();
     void StartGame();
+    
+    virtual void MyTap(float x, float y)
+    {
+        knock.play();
+    }
+
 
     virtual void newObject(tuio::DirectObject * object)
     {

@@ -9,6 +9,7 @@ Card::Card()
 {
     covered=true;
     back.loadImage("images/back.png");
+    firstFinger=true;
 }
 
 Card::~Card()
@@ -19,11 +20,13 @@ Card::Card(int id)
 {
     idCard=id;
     covered=true;
+    firstFinger=true;
+
 }
 
 Card::Card(const Card&)
 {
-
+    firstFinger=true;
 }
 
 void Card::draw()
