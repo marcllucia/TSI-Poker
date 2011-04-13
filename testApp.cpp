@@ -46,7 +46,7 @@ void testApp::Setup(){
     new fons();
     //new TestMyDoubleTap();
 
-    new Game();
+    new Game(1000,1000,1000,1000);
     //new TestMyTap();
 }
 

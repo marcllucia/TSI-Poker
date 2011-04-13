@@ -5,6 +5,7 @@ CashZone::CashZone()
     radi=0.0395;
     increment=0;
     sum=0;
+    G=215;
 
 }
 
@@ -17,7 +18,7 @@ void CashZone::setPoint(float xx, float yy)
 void CashZone::draw()
 {
     ofPushMatrix();
-    ofSetColor(255,215,0);
+    ofSetColor(255,G,0);
     ofCircle(x,y,radi);
 	ofPopMatrix();
     ofEnableAlphaBlending();

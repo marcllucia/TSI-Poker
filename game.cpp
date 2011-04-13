@@ -1,17 +1,83 @@
 #include "game.h"
 
 #include <vector>
-#include <iostream>
 #include <time.h>
 #include <cstdlib>
 #include <math.h>
+#include<time.h>
+#include<iostream>
+using namespace std;
+
+void Game::Restart(int m1, int m2, int m3, int m4)
+{
+    for(int i=0; i<4; i++)
+    {
+        if(Players[i].money==0)
+        {
+            Players[i].playing=false;
+            Players[i].Hand[0].alpha=0;
+            Players[i].Hand[1].alpha=0;
+            Players[i].active=false;
+
+        }
+        else
+        {
+            Players[i].active=false;
+            Players[i].playing=true;
+            Players[i].Hand[0].alpha=255;
+            Players[i].Hand[1].alpha=255;
+        }
+    }
+    Players[0].money=m1;
+    Players[1].money=m2;
+    Players[2].money=m3;
+    Players[3].money=m4;
+    
+    for(int i=0; i<52; i++)
+    {
+        Deck[i]=i;
+    }
+    DealCards();
+    
+    InitializePlayers();
+    turn=smallBlind+1;
+    if(turn==4)
+    {
+        turn=0;
+    }
+    while(!Players[turn].playing)
+    {
+        turn++;
+        if(turn==numPlayers)
+        {
+            turn=0;
+        }
+    }
+
+    smallBlind=turn;
+    StartGame();
+    
+    updateGame=true;
+    flop=false;
+    preriver=false;
+    river=false;
+    talked=false;
+    start=0;
+    text.loadFont("frabk.ttf",100);
+
+}
 
 
-Game::Game()
+Game::Game(int m1, int m2, int m3, int m4)
 {
     updateGame=false;
     numPlayers=4;
     srand((unsigned)time(0));
+    
+    Players[0].money=m1;
+    Players[1].money=m2;
+    Players[2].money=m3;
+    Players[3].money=m4;
 
     //Inicialitzem les textures
     textureData[0]="images/cor-2.png";
@@ -83,14 +149,24 @@ Game::Game()
     
     updateGame=true;
     flop=false;
+    preriver=false;
     river=false;
+    talked=false;
     start=0;
+    text.loadFont("frabk.ttf",100);
+
 }
 
 void Game::DealCards()
 {
     for (int i=0;i<4;i++)
     {
+        Players[i].lastBet=0;
+        Players[i].Hand[0].updateAlpha=false;
+        Players[i].Hand[1].updateAlpha=false;
+        Players[i].increment=0;
+        Players[i].Hand[0].covered=true;
+        Players[i].Hand[1].covered=true;
         Players[i].Hand[0].idCard=GetRandomCard();
         Players[i].Hand[1].idCard=GetRandomCard();
         std::cout <<"Player " << i<<": "<< Players[i].Hand[0].idCard << " , "<<Players[i].Hand[1].idCard<<std::endl;
@@ -98,6 +174,8 @@ void Game::DealCards()
 
     for (int i=0;i<5;i++)
     {
+        Cards[i].covered=true;
+        Cards[i].drawCard=false;
         Cards[i].idCard=GetRandomCard();
     }
 
@@ -107,47 +185,47 @@ void Game::InitializePlayers()
 {
     Players[0].Hand[0].area.set(0.405,0.040,0.07,0.098);
     Players[0].Hand[0].texture.loadImage(textureData[Players[0].Hand[0].idCard]);
-    Players[0].Hand[0].reactZone.set(Players[0].Hand[0].area.x,Players[0].Hand[0].area.y+Players[0].Hand[0].area.height/4*3,Players[0].Hand[0].area.width,Players[0].Hand[0].area.height/4);
+    Players[0].Hand[0].reactZone.set(Players[0].Hand[0].area.x,Players[0].Hand[0].area.y+Players[0].Hand[0].area.height/3*2,Players[0].Hand[0].area.width,Players[0].Hand[0].area.height/3);
     Players[0].Hand[0].tolerance=M_PI;
 
     Players[0].Hand[1].area.set(0.525,0.040,0.07,0.098);
     Players[0].Hand[1].texture.loadImage(textureData[Players[0].Hand[1].idCard]);
-    Players[0].Hand[1].reactZone.set(Players[0].Hand[1].area.x,Players[0].Hand[1].area.y+Players[0].Hand[1].area.height/4*3,Players[0].Hand[1].area.width,Players[0].Hand[1].area.height/4);
+    Players[0].Hand[1].reactZone.set(Players[0].Hand[1].area.x,Players[0].Hand[1].area.y+Players[0].Hand[1].area.height/3*2,Players[0].Hand[1].area.width,Players[0].Hand[1].area.height/3);
     Players[0].Hand[1].tolerance=M_PI;
 
 
     Players[1].Hand[0].area.set(1-0.098-0.040,0.405,0.098,0.07);
-    Players[1].Hand[0].texture.loadImage(textureData[Players[3].Hand[0].idCard]);
-    Players[1].Hand[0].reactZone.set(Players[1].Hand[0].area.x,Players[1].Hand[0].area.y,Players[1].Hand[0].area.width/4,Players[1].Hand[0].area.height);
+    Players[1].Hand[0].texture.loadImage(textureData[Players[1].Hand[0].idCard]);
+    Players[1].Hand[0].reactZone.set(Players[1].Hand[0].area.x,Players[1].Hand[0].area.y,Players[1].Hand[0].area.width/3,Players[1].Hand[0].area.height);
     Players[1].Hand[0].tolerance=3*M_PI/2;
 
 
     Players[1].Hand[1].area.set(1-0.098-0.040,0.525,0.098,0.07);
-    Players[1].Hand[1].texture.loadImage(textureData[Players[3].Hand[1].idCard]);
-    Players[1].Hand[1].reactZone.set(Players[1].Hand[1].area.x,Players[1].Hand[1].area.y,Players[1].Hand[1].area.width/4,Players[1].Hand[1].area.height);
+    Players[1].Hand[1].texture.loadImage(textureData[Players[1].Hand[1].idCard]);
+    Players[1].Hand[1].reactZone.set(Players[1].Hand[1].area.x,Players[1].Hand[1].area.y,Players[1].Hand[1].area.width/3,Players[1].Hand[1].area.height);
     Players[1].Hand[1].tolerance=3*M_PI/2;
 
 
     Players[2].Hand[0].area.set(0.405,1-0.098-0.040,0.07,0.098);
     Players[2].Hand[0].texture.loadImage(textureData[Players[2].Hand[0].idCard]);
-    Players[2].Hand[0].reactZone.set(Players[2].Hand[0].area.x,Players[2].Hand[0].area.y,Players[2].Hand[0].area.width,Players[2].Hand[0].area.height/4);
+    Players[2].Hand[0].reactZone.set(Players[2].Hand[0].area.x,Players[2].Hand[0].area.y,Players[2].Hand[0].area.width,Players[2].Hand[0].area.height/3);
     Players[2].Hand[0].tolerance=0;
 
 
     Players[2].Hand[1].area.set(0.525,1-0.098-0.040,0.07,0.098);
     Players[2].Hand[1].texture.loadImage(textureData[Players[2].Hand[1].idCard]);
-    Players[2].Hand[1].reactZone.set(Players[2].Hand[1].area.x,Players[2].Hand[1].area.y,Players[2].Hand[1].area.width,Players[2].Hand[1].area.height/4);
+    Players[2].Hand[1].reactZone.set(Players[2].Hand[1].area.x,Players[2].Hand[1].area.y,Players[2].Hand[1].area.width,Players[2].Hand[1].area.height/3);
     Players[2].Hand[1].tolerance=0;
 
 
     Players[3].Hand[0].area.set(0.040,0.405,0.098,0.07);
-    Players[3].Hand[0].texture.loadImage(textureData[Players[1].Hand[0].idCard]);
+    Players[3].Hand[0].texture.loadImage(textureData[Players[3].Hand[0].idCard]);
     Players[3].Hand[0].reactZone.set(Players[3].Hand[0].area.x+Players[3].Hand[0].area.width/4*3,Players[3].Hand[0].area.y,Players[3].Hand[0].area.width/4,Players[3].Hand[0].area.height);
     Players[3].Hand[0].tolerance=M_PI/2;
 
 
     Players[3].Hand[1].area.set(0.040,0.525,0.098,0.07);
-    Players[3].Hand[1].texture.loadImage(textureData[Players[1].Hand[1].idCard]);
+    Players[3].Hand[1].texture.loadImage(textureData[Players[3].Hand[1].idCard]);
     Players[3].Hand[1].reactZone.set(Players[3].Hand[1].area.x+Players[3].Hand[1].area.width/4*3,Players[3].Hand[1].area.y,Players[3].Hand[1].area.width/4,Players[3].Hand[1].area.height);
     Players[3].Hand[1].tolerance=M_PI/2;
 
@@ -175,8 +253,7 @@ void Game::InitializePlayers()
 
     for (int i=0; i<4; i++)
     {
-        Players[i].money=1000;
-        Players[i].playing=true;
+        //Players[i].playing=true;
     }
     
     Players[0].angle=180;
@@ -202,14 +279,42 @@ void Game::InitializePlayers()
     Players[3].zone.setPoint(0.089,1-0.33);
     Players[3].zone.chipTexture.loadImage("images/rombo-chip.png");
     
+    Players[0].moneyX=0.25;
+    Players[0].moneyY=0.13;
+
+    Players[1].moneyX=-0.13;
+    Players[1].moneyY=0.25;
     
+    Players[2].moneyX=-0.25;
+    Players[2].moneyY=-0.13;
+    
+    Players[3].moneyX=0.13;
+    Players[3].moneyY=-0.25;
+    
+    angle=0;
 
 }
 
 
 void Game::draw()
 {
-    for( map<int,tuio::DirectObject*>::iterator it=objects.begin(); it!=objects.end(); ++it)
+    char pot[255]="Pot: ";
+    char string[255];
+    sprintf(string,"%i", (int)money);
+    strcat(pot, string);
+
+    ofRectangle rect = text.getStringBoundingBox(pot, 0,0);
+
+    ofPushMatrix();
+    ofTranslate(0.5,0.5,0);
+    ofRotateZ(angle);
+    ofTranslate(0,0.2,0);
+    ofScale(0.00026f,0.00026f,1);
+    ofTranslate(-rect.width/2,0,0);
+    text.drawString(pot, 0,0);
+    ofPopMatrix();
+
+    /*for( map<int,tuio::DirectObject*>::iterator it=objects.begin(); it!=objects.end(); ++it)
     {
         DirectObject * obj = it->second;
         ofImage card;
@@ -220,109 +325,366 @@ void Game::draw()
         ofTranslate(-(obj->getX()),-(obj->getY()),0);
         card.draw(obj->getX()-(0.07/2),obj->getY()-(0.098/4),0.08,0.11);
         ofPopMatrix();
-    }
+    }*/
 }
 
 void Game::update()
-{
-    if(updateGame)
-    {      
-        if(!flop)
+{  
+    angle+=0.2;
+    int numPlaying=0;
+    int numAllIn=0;
+    for(int i=0; i<4; i++)
+    {
+        if(Players[i].playing)
         {
-            Cards[0].drawCard=false;
-            Cards[1].drawCard=false;
-            Cards[2].drawCard=true;
-            Cards[3].drawCard=true;
-            Cards[4].drawCard=true;
+            numPlaying++;
         }
-        else if(!river)
+        if(Players[i].allIn)
         {
-            Cards[1].drawCard=true;
+            numAllIn++;
         }
-
+    }
+    if(numPlaying==numAllIn and numPlaying>0)
+    {
+        flop=false;
+        preriver=false;
+        river=false;
+        preflop=false;
         for(int i=0; i<4; i++)
         {
-            Players[i].tableBet=bet;
-        }
-
-        if(!Players[turn].playing or !Players[turn].active)
-        {
-            if(Players[turn].confirmed)
+            if(Players[i].playing)
             {
-                money+=Players[turn].bet;
-                if(Players[turn].bet>bet)
-                {
-                    smallBlind=turn;
-                    firstPlayer=turn;
-                }
-                bet=Players[turn].bet+Players[turn].lastBet;
-                Players[turn].lastBet=bet;
-                Players[turn].confirmed=false;
-                
-            }
-            Players[turn].active=false;
-            Players[turn].zone.increment=0;
-            Players[turn].zone.radi=0.039;
-            turn++;
-            if(turn==numPlayers)
-            {
-                turn=0;
-            }
-            if(turn==firstPlayer)
-            {
-                //if(start%2==0)
-                {
-                    if(bet==Players[turn].lastBet)
-                    {
-                        if(river)
-                        {
-                            Cards[0].covered=false;
-                        }
-                       
-                        if(flop)
-                        {
-                            Cards[1].covered=false;
-                            Cards[0].drawCard=true;
-                        }
-                        if(start==2)
-                        {
-                            Cards[0].covered=false;
-                        }
-                        Cards[2].covered=false;
-                        Cards[3].covered=false;
-                        Cards[4].covered=false;
-                        flop=true;
-                        Players[turn].active=false;
-                        turn=smallBlind;
-                        Players[turn].active=true;
-                        firstPlayer=smallBlind;
-                        if(firstPlayer==numPlayers)
-                        {
-                            firstPlayer=0;
-                        }
-
-                    }
-                }
-                start++;
-                
-                lastBet=bet;
+                Players[i].Hand[0].covered=false;
+                Players[i].Hand[1].covered=false;
             }
             
-            if(Players[turn].lastBet==bet)
+        }
+        for(int i=0; i<6; i++)
+        {
+            Cards[i].drawCard=true;
+            Cards[i].covered=false;
+        }
+        
+        if(Players[0].playing)
+        {
+            c0[0]=Players[0].Hand[0].idCard;
+            c0[1]=Players[0].Hand[1].idCard;
+            c0[2]=Cards[0].idCard;
+            c0[3]=Cards[1].idCard;
+            c0[4]=Cards[2].idCard;
+            c0[5]=Cards[3].idCard;
+            c0[6]=Cards[4].idCard;
+        }
+        else
+        {
+            c0[0]=-1;
+        }
+        
+        if(Players[1].playing)
+        {
+            c1[0]=Players[1].Hand[0].idCard;
+            c1[1]=Players[1].Hand[1].idCard;
+            c1[2]=Cards[0].idCard;
+            c1[3]=Cards[1].idCard;
+            c1[4]=Cards[2].idCard;
+            c1[5]=Cards[3].idCard;
+            c1[6]=Cards[4].idCard;
+        }
+        else
+        {
+            c1[0]=-1;
+        }
+        
+        if(Players[2].playing)
+        {
+            c2[0]=Players[2].Hand[0].idCard;
+            c2[1]=Players[2].Hand[1].idCard;
+            c2[2]=Cards[0].idCard;
+            c2[3]=Cards[1].idCard;
+            c2[4]=Cards[2].idCard;
+            c2[5]=Cards[3].idCard;
+            c2[6]=Cards[4].idCard;
+        }
+        else
+        {
+            c2[0]=-1;
+        }
+        
+        if(Players[3].playing)
+        {
+            c3[0]=Players[3].Hand[0].idCard;
+            c3[1]=Players[3].Hand[1].idCard;
+            c3[2]=Cards[0].idCard;
+            c3[3]=Cards[1].idCard;
+            c3[4]=Cards[2].idCard;
+            c3[5]=Cards[3].idCard;
+            c3[6]=Cards[4].idCard;
+        }
+        else
+        {
+            c3[0]=-1;
+        }
+        int winner=calcularguanyador(c0,c1,c2,c3);
+        
+        Players[winner].money+=money;
+        Players[turn].turnOff();
+        Restart(Players[0].money,Players[1].money,Players[2].money,Players[3].money);
+        std::cout<<"WINNER : "<<winner<<std::endl;
+        
+    }
+    for(int i=0;i<4;i++)
+    {
+        Players[i].tableBet=bet;
+
+        if(!Players[i].playing)
+        {
+            Players[i].lastBet=bet;
+        }
+        if(Players[i].lastBet==bet)
+        {
+            Players[i].canCheck=true;
+        }
+        else
+        {
+            Players[i].canCheck=false;
+        }
+    }
+    
+    if(preflop)
+    {
+        Cards[2].drawCard=true;
+        Cards[3].drawCard=true;
+        Cards[4].drawCard=true;
+
+        if(!Players[turn].active or !Players[turn].playing)
+        {
+            int sB;
+            if(smallBlind+1==4)
             {
-                Players[turn].canCheck=true;
+                sB=0;
             }
             else
             {
-                Players[turn].canCheck=false;
+                sB=smallBlind+1;
             }
-            Players[turn].tableBet=bet;
-            Players[turn].active=true;
-            Players[turn].zone.increment=0.0002;
-        }
+            if(turn==sB)
+            {
+                talked=true;
+            }
+            if(Players[turn].confirmed)
+            {
+                bet=Players[turn].lastBet+Players[turn].bet;
+                money+=bet;
+                Players[turn].confirmed=false;
+                Players[turn].lastBet+=Players[turn].bet;
+            }
 
+            Players[turn].turnOff();
+            turn++;
+            if(turn==4)
+            {
+                turn=0;
+            }
+            
+            if(Players[turn].lastBet-bet==0 and talked)
+            {
+                talked=false;
+                preflop=false;
+                flop=true;
+                Cards[1].drawCard=true;
+                Cards[2].covered=false;
+                Cards[3].covered=false;
+                Cards[4].covered=false;
+                turn=smallBlind;
+                Players[turn].turnOn(bet);
+            }
+            else
+            {
+                Players[turn].turnOn(bet);
+
+            }
+        }
+    }
+    else if(flop)
+    {
+        if(!Players[turn].active or !Players[turn].playing)
+        {
+            if(Players[turn].confirmed)
+            {
+                bet=Players[turn].lastBet+Players[turn].bet;
+                money+=bet;
+                Players[turn].confirmed=false;
+                Players[turn].lastBet+=Players[turn].bet;
+            }
+            Players[turn].turnOff();
+            turn++;
+            if(turn==4)
+            {
+                turn=0;
+            }
+            if(turn==smallBlind)
+            {
+                talked=true;
+            }
+            if(Players[turn].lastBet-bet==0 and talked)
+            {
+                talked=false;
+                flop=false;
+                preriver=true;
+                Cards[1].covered=false;
+                Cards[0].drawCard=true;
+                turn=smallBlind;
+                Players[turn].turnOn(bet);
+            }
+            else
+            {
+                Players[turn].turnOn(bet);
+            }
+
+        }
+    }
+    else if(preriver)
+    {
+        if(!Players[turn].active or !Players[turn].playing)
+        {
+            if(Players[turn].confirmed)
+            {
+                bet=Players[turn].lastBet+Players[turn].bet;
+                money+=bet;
+                Players[turn].confirmed=false;
+                Players[turn].lastBet+=Players[turn].bet;
+            }
+            Players[turn].turnOff();
+            turn++;
+            if(turn==4)
+            {
+                turn=0;
+            }
+            if(turn==smallBlind)
+            {
+                talked=true;
+            }
+            if(Players[turn].lastBet-bet==0 and talked)
+            {
+                talked=false;
+                preriver=false;
+                river=true;
+                Cards[0].covered=false;
+                turn=smallBlind;
+                Players[turn].turnOn(bet);
+            }
+            else
+            {
+                Players[turn].turnOn(bet);
+            }
+            
+        }
+    }
+    else if(river)
+    {
+        if(!Players[turn].active or !Players[turn].playing)
+        {
+            if(Players[turn].confirmed)
+            {
+                bet=Players[turn].lastBet+Players[turn].bet;
+                money+=bet;
+                Players[turn].confirmed=false;
+                Players[turn].lastBet+=Players[turn].bet;
+            }
+            Players[turn].turnOff();
+            turn++;
+            if(turn==4)
+            {
+                turn=0;
+            }
+            if(turn==smallBlind)
+            {
+                talked=true;
+            }
+            if(Players[turn].lastBet-bet==0 and talked)
+            {
+                talked=false;
+                river=false;
+                if(Players[0].playing)
+                {
+                    c0[0]=Players[0].Hand[0].idCard;
+                    c0[1]=Players[0].Hand[1].idCard;
+                    c0[2]=Cards[0].idCard;
+                    c0[3]=Cards[1].idCard;
+                    c0[4]=Cards[2].idCard;
+                    c0[5]=Cards[3].idCard;
+                    c0[6]=Cards[4].idCard;
+                }
+                else
+                {
+                    c0[0]=-1;
+                }
+                
+                if(Players[1].playing)
+                {
+                    c1[0]=Players[1].Hand[0].idCard;
+                    c1[1]=Players[1].Hand[1].idCard;
+                    c1[2]=Cards[0].idCard;
+                    c1[3]=Cards[1].idCard;
+                    c1[4]=Cards[2].idCard;
+                    c1[5]=Cards[3].idCard;
+                    c1[6]=Cards[4].idCard;
+                }
+                else
+                {
+                    c1[0]=-1;
+                }
+
+                if(Players[2].playing)
+                {
+                    c2[0]=Players[2].Hand[0].idCard;
+                    c2[1]=Players[2].Hand[1].idCard;
+                    c2[2]=Cards[0].idCard;
+                    c2[3]=Cards[1].idCard;
+                    c2[4]=Cards[2].idCard;
+                    c2[5]=Cards[3].idCard;
+                    c2[6]=Cards[4].idCard;
+                }
+                else
+                {
+                    c2[0]=-1;
+                }
+                
+                if(Players[3].playing)
+                {
+                    c3[0]=Players[3].Hand[0].idCard;
+                    c3[1]=Players[3].Hand[1].idCard;
+                    c3[2]=Cards[0].idCard;
+                    c3[3]=Cards[1].idCard;
+                    c3[4]=Cards[2].idCard;
+                    c3[5]=Cards[3].idCard;
+                    c3[6]=Cards[4].idCard;
+                }
+                else
+                {
+                    c3[0]=-1;
+                }
+                
+                int winner=calcularguanyador(c0,c1,c2,c3);
+                Players[winner].money+=money;
+                Players[turn].turnOff();
+                Restart(Players[0].money,Players[1].money,Players[2].money,Players[3].money);
+
+                
+                std::cout<<"WINNER : "<<winner<<std::endl;
+                
+
+                
+            }
+            else
+            {
+                Players[turn].turnOn(bet);
+            }
+            
+        }
     }
 
+    
 }
 
 int Game::GetRandomCard()
@@ -337,13 +699,24 @@ void Game::StartGame()
 {
     Players[turn].money-=10;
     Players[turn].lastBet=10;
-
+    Players[turn].position=0;
+    
+    
     turn++;
     if(turn==numPlayers)
     {
         turn=0;
     }
+    while(!Players[turn].playing)
+    {
+        turn++;
+        if(turn==numPlayers)
+        {
+            turn=0;
+        }
+    }
     
+    Players[turn].position=1;
     Players[turn].money-=20;
     Players[turn].lastBet=20;
     
@@ -353,13 +726,21 @@ void Game::StartGame()
     {
         turn=0;
     }
-    
-    Players[turn].active=true;
+    while(!Players[turn].playing)
+    {
+        turn++;
+        if(turn==numPlayers)
+        {
+            turn=0;
+        }
+    }
+    bet=20;
+    money=30;
     Players[turn].canCheck=false;
-    Players[turn].zone.increment=0.0002;
+    Players[turn].turnOn(bet);
     lastBet=20;
     firstPlayer=turn;
+    preflop=true;
 
-    money=10+20;
-    bet=20;
+    
 }

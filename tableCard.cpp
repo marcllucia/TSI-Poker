@@ -10,7 +10,9 @@ using namespace std;
 TableCard::TableCard()
 {
     covered=true;
-     back.loadImage("images/back.png");
+    back.loadImage("images/back.png");
+    drawCard=false;
+
 }
 
 TableCard::~TableCard()

@@ -19,6 +19,7 @@ class Player : public OnTable < CanAposta < CanMyDoubleTap < CanSendCards < CanD
 
 	public:
     float xPos, yPos;
+    float moneyX, moneyY;
 	int idPlayer;
 	int money;
     int bet;
@@ -31,10 +32,15 @@ class Player : public OnTable < CanAposta < CanMyDoubleTap < CanSendCards < CanD
     bool playing;
     bool confirmed;
     bool canCheck;
+    bool allIn;
+    int position;
     ofSoundPlayer chips;
+    ofSoundPlayer fold;
     Card Hand[2];
     ofRectangle reactZone;
     ofTrueTypeFont	moneyText;
+    ofTrueTypeFont	moneyTable;
+
     CashZone zone;
 
 
@@ -43,20 +49,25 @@ class Player : public OnTable < CanAposta < CanMyDoubleTap < CanSendCards < CanD
 	Player();
     void draw();
     void update();
+    void turnOn(int bet);
+    void turnOff();
     
     virtual void Aposta(float x, float y,float v){
     
-        if(active)
+        if(active and bet!=0)
         {
             float distance=sqrt(pow((x-zone.x),2)+pow((y-zone.y),2));
-            if(distance<0.05)
+            if(distance<0.1)
             {
                 std::cout <<"Aposta! " << x << " " << y << std::endl;
-
                 chips.play();
                 money-=bet;
                 active=false;
                 confirmed=true;
+                if(money==0)
+                {
+                    allIn=true;
+                }
             }
 
         }
@@ -83,18 +94,24 @@ class Player : public OnTable < CanAposta < CanMyDoubleTap < CanSendCards < CanD
             {
                 if(x2>Hand[1].area.x&&x2<Hand[1].area.x+Hand[1].area.width&&y2>Hand[1].area.y&&y2<Hand[1].area.y+Hand[1].area.height)
                 {
+                    Hand[0].updateAlpha=true;
+                    Hand[1].updateAlpha=true;
                     increment=0.008;
                     active=false;
                     playing=false;
+                    fold.play();
                 }
             }
             else if(x1>Hand[1].area.x&&x1<Hand[1].area.x+Hand[1].area.width&&y1>Hand[1].area.y&&y1<Hand[1].area.y+Hand[1].area.height)
             {
                 if(x2>Hand[0].area.x&&x2<Hand[0].area.x+Hand[0].area.width&&y2>Hand[0].area.y&&y2<Hand[0].area.y+Hand[0].area.height)
                 {
+                    Hand[0].updateAlpha=true;
+                    Hand[1].updateAlpha=true;
                     increment=0.008;
                     active=false;
                     playing=false;
+                    fold.play();
                 }
 
             }

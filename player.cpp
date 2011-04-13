@@ -5,21 +5,54 @@ Player::Player()
 {
     bet=0;
     increment=0;
+    playing=true;
+    active=false;
     lastBet=0;
     confirmed=false;
+    allIn=false;
     moneyText.loadFont("Courier.dfont",100);
-    chips.loadSound("sounds/chips.mp3");
+    moneyTable.loadFont("frabk.ttf",100);
 
+    chips.loadSound("sounds/chips.mp3");
+    fold.loadSound("sounds/fold.mp3");
+
+
+}
+
+void Player::turnOn(int bet)
+{
+    tableBet=bet;
+    active=true;
+    zone.increment=0.0002;
+}
+
+void Player::turnOff()
+{
+    active=false;
+    zone.increment=0;
+    zone.radi=0.039;
 }
 
 void Player::draw()
 {
     
+    char moneyValue[255]="Money: ";
     char moneyString[255];
     char tempString[255];
     char temp[255];
-    sprintf(tempString,"%i", (int)bet);
+    if(playing)
+    {
+        sprintf(tempString,"%i", (int)bet);
+    }
+    else
+    {
+        sprintf(tempString,"%i", 0);
+    }
+
     sprintf(moneyString,"%i", (int)money);
+    
+    
+    strcat(moneyValue, moneyString);
 	sprintf(temp,"%i", (int)bet);
     if(strlen(temp)==1)
     {
@@ -60,12 +93,11 @@ void Player::draw()
     ofPopMatrix();
     
     ofPushMatrix();
-    ofTranslate(zone.x+4*xPos,zone.y+4*yPos,0);
+    ofTranslate(zone.x+moneyX,zone.y+moneyY,0);
     ofRotateZ(angle);
-    ofScale(0.0003f,0.0003f,1);
-    moneyText.drawString(moneyString, 0,0);
+    ofScale(0.00026f,0.00026f,1);
+    moneyTable.drawString(moneyValue, 0,0);
     ofPopMatrix();
-
 
 }
 

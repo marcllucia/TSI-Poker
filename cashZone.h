@@ -16,6 +16,7 @@ using namespace tuio;
 class CashZone  : public OnTable < CanDirectObjects <  Graphic > >
 {
     public:
+    int G;
     float x,y,radi,increment,angle,sum;
     ofImage chipTexture;
     ofTrueTypeFont	moneyText;
@@ -31,8 +32,9 @@ class CashZone  : public OnTable < CanDirectObjects <  Graphic > >
     {
         float distance=sqrt(pow((object->getX()-x),2)+pow((object->getY()-y),2));
         
-        if(distance<0.05)
+        if(distance<0.1)
         {
+            G=0;
             angle=object->angle;
         }
     }
@@ -40,6 +42,7 @@ class CashZone  : public OnTable < CanDirectObjects <  Graphic > >
     virtual void removeObject(tuio::DirectObject * object)
     {
         sum=0;
+        G=215;
     }
     
     virtual void updateObject(tuio::DirectObject * object)

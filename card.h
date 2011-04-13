@@ -26,6 +26,7 @@ class Card : public OnTable < CanTwoFingers < CanDirectFingers < CanDirectObject
 	public:
 	int idCard;
     float angle,fingerX, fingerY, tolerance;
+    float alpha;
 	ofRectangle area;
     ofRectangle reactZone;
 	ofImage texture;
@@ -33,6 +34,7 @@ class Card : public OnTable < CanTwoFingers < CanDirectFingers < CanDirectObject
 	bool covered;
     bool first;
     bool firstFinger;
+    bool updateAlpha;
     std::map<int, tuio::DirectObject*> objects;
 
     Card();
@@ -114,6 +116,7 @@ class Card : public OnTable < CanTwoFingers < CanDirectFingers < CanDirectObject
 
 
     void draw();
+    void update();
 
 };
 
