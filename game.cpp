@@ -4,7 +4,6 @@
 #include <time.h>
 #include <cstdlib>
 #include <math.h>
-#include<time.h>
 #include<iostream>
 using namespace std;
 
@@ -33,6 +32,7 @@ void Game::Restart(int m1, int m2, int m3, int m4)
     Players[2].money=m3;
     Players[3].money=m4;
     
+    Deck.resize(52);
     for(int i=0; i<52; i++)
     {
         Deck[i]=i;
@@ -161,7 +161,11 @@ void Game::DealCards()
 {
     for (int i=0;i<4;i++)
     {
+        Players[i].position=-1;
         Players[i].lastBet=0;
+        Players[i].bet=0;
+        Players[i].winner=false;
+        Players[i].allIn=false;
         Players[i].Hand[0].updateAlpha=false;
         Players[i].Hand[1].updateAlpha=false;
         Players[i].increment=0;
@@ -183,6 +187,8 @@ void Game::DealCards()
 
 void Game::InitializePlayers()
 {
+    temps=0;
+    moreTime=0;
     Players[0].Hand[0].area.set(0.405,0.040,0.07,0.098);
     Players[0].Hand[0].texture.loadImage(textureData[Players[0].Hand[0].idCard]);
     Players[0].Hand[0].reactZone.set(Players[0].Hand[0].area.x,Players[0].Hand[0].area.y+Players[0].Hand[0].area.height/3*2,Players[0].Hand[0].area.width,Players[0].Hand[0].area.height/3);
@@ -313,23 +319,11 @@ void Game::draw()
     ofTranslate(-rect.width/2,0,0);
     text.drawString(pot, 0,0);
     ofPopMatrix();
-
-    /*for( map<int,tuio::DirectObject*>::iterator it=objects.begin(); it!=objects.end(); ++it)
-    {
-        DirectObject * obj = it->second;
-        ofImage card;
-        ofPushMatrix();
-        ofSetColor(255,255,255);
-        ofTranslate(obj->getX(),obj->getY(),0);
-        ofRotateZ(obj->angle*180/3.1415);
-        ofTranslate(-(obj->getX()),-(obj->getY()),0);
-        card.draw(obj->getX()-(0.07/2),obj->getY()-(0.098/4),0.08,0.11);
-        ofPopMatrix();
-    }*/
 }
 
 void Game::update()
 {  
+    temps+=moreTime;
     angle+=0.2;
     int numPlaying=0;
     int numAllIn=0;
@@ -424,11 +418,45 @@ void Game::update()
         {
             c3[0]=-1;
         }
-        int winner=calcularguanyador(c0,c1,c2,c3);
+        int winner=calcularguanyador(c0,c1,c2,c3,winners);
+        int numWinners=0;
+        if(winner==-1)
+        {
+            for (int k=0; k<4; k++)
+            {
+                if(winners[k]!=-1)
+                {
+                    numWinners++;
+                }
+             }
+        }
         
-        Players[winner].money+=money;
-        Players[turn].turnOff();
-        Restart(Players[0].money,Players[1].money,Players[2].money,Players[3].money);
+        if(temps==0)
+        {
+            if(winner==-1)
+            {
+                for (int k=0; k<4; k++)
+                {
+                    if(winners[k]!=-1)
+                    {
+                        Players[k].money+=(money/numWinners);
+                    }
+                }
+
+            }
+            else
+            {
+                Players[winner].money+=money;
+            }
+            Players[turn].turnOff();
+            moreTime=0.1;
+        }
+        Players[winner].winner=true;
+
+        if(temps>70)
+        {   
+            Restart(Players[0].money,Players[1].money,Players[2].money,Players[3].money);
+        }
         std::cout<<"WINNER : "<<winner<<std::endl;
         
     }
@@ -605,6 +633,15 @@ void Game::update()
             {
                 talked=false;
                 river=false;
+                for(int i=0; i<4; i++)
+                {
+                    if(Players[i].playing)
+                    {
+                        Players[i].Hand[0].covered=false;
+                        Players[i].Hand[1].covered=false;
+                    }
+                    
+                }
                 if(Players[0].playing)
                 {
                     c0[0]=Players[0].Hand[0].idCard;
@@ -665,11 +702,41 @@ void Game::update()
                     c3[0]=-1;
                 }
                 
-                int winner=calcularguanyador(c0,c1,c2,c3);
-                Players[winner].money+=money;
-                Players[turn].turnOff();
-                Restart(Players[0].money,Players[1].money,Players[2].money,Players[3].money);
+                int winner=calcularguanyador(c0,c1,c2,c3,winners);
+                int numWinners=0;
+                if(winner==-1)
+                {
+                    for (int k=0; k<4; k++)
+                    {
+                        if(winners[k]!=-1)
+                        {
+                            numWinners++;
+                        }
+                    }
+                }
+                
+                if(temps==0)
+                {
+                    if(winner==-1)
+                    {
+                        for (int k=0; k<4; k++)
+                        {
+                            if(winners[k]!=-1)
+                            {
+                                Players[k].money+=(money/numWinners);
+                            }
+                        }
+                        
+                    }
+                    else
+                    {
+                        Players[winner].money+=money;
+                    }
+                }
 
+                Players[turn].turnOff();
+                moreTime=0.1;
+                Players[winner].winner=true;
                 
                 std::cout<<"WINNER : "<<winner<<std::endl;
                 
@@ -683,6 +750,11 @@ void Game::update()
             
         }
     }
+    if(temps>70)
+    {   
+        Restart(Players[0].money,Players[1].money,Players[2].money,Players[3].money);
+    }
+
 
     
 }

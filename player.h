@@ -32,6 +32,7 @@ class Player : public OnTable < CanAposta < CanMyDoubleTap < CanSendCards < CanD
     bool playing;
     bool confirmed;
     bool canCheck;
+    bool winner;
     bool allIn;
     int position;
     ofSoundPlayer chips;
@@ -60,6 +61,7 @@ class Player : public OnTable < CanAposta < CanMyDoubleTap < CanSendCards < CanD
             if(distance<0.1)
             {
                 std::cout <<"Aposta! " << x << " " << y << std::endl;
+
                 chips.play();
                 money-=bet;
                 active=false;

@@ -684,134 +684,914 @@ void evaluateHand(int cartes[7],int *hand,int *puntuacio)
 */
 }
 
-int calcularguanyador(int cartes1[7],int cartes2[7],int cartes3[7], int cartes4[7])
+int calcularguanyador(int cartes1[7],int cartes2[7],int cartes3[7], int cartes4[7], int *guanyadors)
 {
-
-
+	int empat=false;
+	int jugadaempat;
+	int iguany;
+	
+	bool noempat = true;
+	int handcompare1[5];
+	int handcompare2[5];
+    
+    
 	int handres1[5];
 	int handres2[5];
 	int handres3[5];
 	int handres4[5];
-
-
+    
+    
 	int puntuacio1;
 	int puntuacio2;
 	int puntuacio3;
 	int puntuacio4;
-
+    
 	int pguanyadora = 0;
-
+    
 	std::vector <int> puntuacions;
-
+    
 	int hand[5] = {-10,-10,-10,-10,-10};
 	int puntuacio;
-
-//comencem a mirar les 4 mans.
-
-//ma1
-if(cartes1[0]!=-1){
-	evaluateHand(cartes1,hand,&puntuacio);
-	for(int i=0;i<5;i++)handres1[i]=hand[i];
-	for(int i=0;i<5;i++) std::cout <<"Hand: "<< num(handres1[i])<< " de " << pal(handres1[i]) << std::endl;
-	puntuacio1=puntuacio;
-	puntuacions.push_back(puntuacio1);
-	std::cout << "Puntuacio de la hand final: "<<puntuacio1<<std::endl;
-	for(int i=0;i<5;i++)hand[i]=-10;
-}
-if(cartes1[0]==-1)	puntuacions.push_back(0);
-
-//ma2
-if(cartes2[0]!=-1){
-	evaluateHand(cartes2,hand,&puntuacio);
-	for(int i=0;i<5;i++)handres2[i]=hand[i];
-	for(int i=0;i<5;i++) std::cout <<"Hand: "<< num(handres2[i])<< " de " << pal(handres2[i]) << std::endl;
-	puntuacio2=puntuacio;
-	puntuacions.push_back(puntuacio2);
-	std::cout << "Puntuacio de la hand final: "<<puntuacio2<<std::endl;
-	for(int i=0;i<5;i++)hand[i]=-10;
-}
-if(cartes2[0]==-1)	puntuacions.push_back(0);
-
-
-//ma3
-if(cartes3[0]!=-1){
-	evaluateHand(cartes3,hand,&puntuacio);
-	for(int i=0;i<5;i++)handres3[i]=hand[i];
-	for(int i=0;i<5;i++) std::cout <<"Hand: "<< num(handres3[i])<< " de " << pal(handres3[i]) << std::endl;
-	puntuacio3=puntuacio;
-	puntuacions.push_back(puntuacio3);
-	std::cout << "Puntuacio de la hand final: "<<puntuacio3<<std::endl;
-	for(int i=0;i<5;i++)hand[i]=-10;
-}
-if(cartes3[0]==-1)	puntuacions.push_back(0);
-
-
-//ma4
-if(cartes4[0]!=-1){
-	evaluateHand(cartes4,hand,&puntuacio);
-	for(int i=0;i<5;i++)handres4[i]=hand[i];
-	for(int i=0;i<5;i++) std::cout <<"Hand: "<< num(handres4[i])<< " de " << pal(handres4[i]) << std::endl;
-	puntuacio4=puntuacio;
-	puntuacions.push_back(puntuacio4);
-	std::cout << "Puntuacio de la hand final: "<<puntuacio4<<std::endl;
-	for(int i=0;i<5;i++)hand[i]=-10;
-}
-if(cartes4[0]==-1)	puntuacions.push_back(0);
-
-
+    
+    //comencem a mirar les 4 mans.
+    
+    //ma1
+    if(cartes1[0]!=-1){
+        evaluateHand(cartes1,hand,&puntuacio);
+        for(int i=0;i<5;i++)handres1[i]=hand[i];
+        for(int i=0;i<5;i++) std::cout <<"Hand: "<< num(handres1[i])<< " de " << pal(handres1[i]) << std::endl;
+        puntuacio1=puntuacio;
+        puntuacions.push_back(puntuacio1);
+        //std::cout << "Puntuacio de la hand final: "<<puntuacio1<<std::endl;
+        for(int i=0;i<5;i++)hand[i]=-10;
+    }
+    if(cartes1[0]==-1)	puntuacions.push_back(0);
+    
+    //ma2
+    if(cartes2[0]!=-1){
+        evaluateHand(cartes2,hand,&puntuacio);
+        for(int i=0;i<5;i++)handres2[i]=hand[i];
+        for(int i=0;i<5;i++) std::cout <<"Hand: "<< num(handres2[i])<< " de " << pal(handres2[i]) << std::endl;
+        puntuacio2=puntuacio;
+        puntuacions.push_back(puntuacio2);
+        //std::cout << "Puntuacio de la hand final: "<<puntuacio2<<std::endl;
+        for(int i=0;i<5;i++)hand[i]=-10;
+    }
+    if(cartes2[0]==-1)	puntuacions.push_back(0);
+    
+    
+    //ma3
+    if(cartes3[0]!=-1){
+        evaluateHand(cartes3,hand,&puntuacio);
+        for(int i=0;i<5;i++)handres3[i]=hand[i];
+        for(int i=0;i<5;i++) std::cout <<"Hand: "<< num(handres3[i])<< " de " << pal(handres3[i]) << std::endl;
+        puntuacio3=puntuacio;
+        puntuacions.push_back(puntuacio3);
+        //std::cout << "Puntuacio de la hand final: "<<puntuacio3<<std::endl;
+        for(int i=0;i<5;i++)hand[i]=-10;
+    }
+    if(cartes3[0]==-1)	puntuacions.push_back(0);
+    
+    
+    //ma4
+    if(cartes4[0]!=-1){
+        evaluateHand(cartes4,hand,&puntuacio);
+        for(int i=0;i<5;i++)handres4[i]=hand[i];
+        for(int i=0;i<5;i++) std::cout <<"Hand: "<< num(handres4[i])<< " de " << pal(handres4[i]) << std::endl;
+        puntuacio4=puntuacio;
+        puntuacions.push_back(puntuacio4);
+        //std::cout << "Puntuacio de la hand final: "<<puntuacio4<<std::endl;
+        for(int i=0;i<5;i++)hand[i]=-10;
+    }
+    if(cartes4[0]==-1)	puntuacions.push_back(0);
+    
+    
+	std::cout<<"size puntuacions: "<<puntuacions.size()<<std::endl;
+    
+	//for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+    
 	for(int i =0;i <puntuacions.size();i++)
 	{
+		noempat = true;
+        
+		if(i==0)
+		{
+			for(int i =0;i<5;i++)handcompare1[i]=handres1[i];
+		}
+		if(i==1)
+		{
+			for(int j =0;j<5;j++)handcompare1[j]=handres2[j];
+		}
+		if(i==2)
+		{
+			for(int j =0;j<5;j++)handcompare1[j]=handres3[j];
+		}
+		if(i==3)
+		{
+			for(int j =0;j<5;j++)handcompare1[j]=handres4[j];
+		}
+        
+        
+		//std::cout<<"handcompare1[0]: "<< num(handcompare1[0]) <<std::endl;
+		//std::cout<<"handcompare2[0]: "<< num(handcompare2[0]) <<std::endl;
 		if(puntuacions[i]>pguanyadora)
 		{
 			pguanyadora = puntuacions[i];
+			iguany = i;
+            
+			empat=false;
+            
+			if(i==0)
+			{
+				for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+			}			
+			if(i==1)
+			{
+				for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+			}
+			if(i==2)
+			{
+				for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+			}
+			if(i==3)
+			{
+				for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+			}
+			noempat =false;
+            
 		}
-		if(puntuacions[i]==pguanyadora and pguanyadora!=0)
+		
+		else if(puntuacions[i]==pguanyadora and pguanyadora!=0)
 		{
+            
 			if(pguanyadora==1)
 			{
-
+				if(num(handcompare1[0])>num(handcompare2[0]))
+				{
+					pguanyadora = puntuacions[i];
+					iguany = i;
+                    
+					empat=false;
+                    
+					if(i==0)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+					}			
+					if(i==1)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+					}
+					if(i==2)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+					}
+					if(i==3)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+					}
+					noempat =false;
+				}
+				if(num(handcompare1[0])==num(handcompare2[0]))
+				{
+					if(num(handcompare1[1])>num(handcompare2[1]))
+					{
+						pguanyadora = puntuacions[i];
+						iguany = i;
+                        
+						empat=false;
+						if(i==0)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+						}			
+						if(i==1)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+						}
+						if(i==2)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+						}
+						if(i==3)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+						}
+						noempat =false;
+					}
+					if(num(handcompare1[1])==num(handcompare2[1]))
+					{
+						if(num(handcompare1[2])>num(handcompare2[2]))
+						{
+							pguanyadora = puntuacions[i];
+							iguany = i;
+                            
+							empat=false;
+							if(i==0)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+							}			
+							if(i==1)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+							}
+							if(i==2)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+							}
+							if(i==3)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+							}
+						}
+						if(num(handcompare1[2])==num(handcompare2[2]))
+						{
+							if(num(handcompare1[3])>num(handcompare2[3]))
+							{
+								pguanyadora = puntuacions[i];
+								iguany = i;
+                                
+								empat=false;
+								if(i==0)
+								{
+									for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+								}			
+								if(i==1)
+								{
+									for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+								}
+								if(i==2)
+								{
+									for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+								}
+								if(i==3)
+								{
+									for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+								}
+							}
+							if(num(handcompare1[3])==num(handcompare2[3]))
+							{
+								if(num(handcompare1[4])>num(handcompare2[4]))
+								{
+									pguanyadora = puntuacions[i];
+									iguany = i;
+									std::cout<<"i guany : "<<iguany<<std::endl;
+									empat=false;
+									if(i==0)
+									{
+										for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+									}			
+									if(i==1)
+									{
+										for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+									}
+									if(i==2)
+									{
+										for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+									}
+									if(i==3)
+									{
+										for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+									}
+								}
+								if(num(handcompare1[4])==num(handcompare2[4]))
+								{
+									empat = true;
+									pguanyadora = puntuacions[i];
+									jugadaempat = pguanyadora;
+                                    
+									guanyadors[i-1]=1;
+									guanyadors[i]=1;
+								}	
+							}	
+						}
+					}
+				}
 			}
 			if(pguanyadora==2)
 			{
-
+				if(num(handcompare1[0])>num(handcompare2[0]))
+				{
+					pguanyadora = puntuacions[i];
+					iguany = i;
+                    
+					empat=false;
+					if(i==0)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+					}			
+					if(i==1)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+					}
+					if(i==2)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+					}
+					if(i==3)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+					}
+				}
+				if(num(handcompare1[0])==num(handcompare2[0]))
+				{
+					if(num(handcompare1[4])>num(handcompare2[4]))
+					{
+						pguanyadora = puntuacions[i];
+						iguany = i;
+                        
+						empat=false;
+						if(i==0)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+						}			
+						if(i==1)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+						}
+						if(i==2)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+						}
+						if(i==3)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+						}
+					}
+					if(num(handcompare1[4])==num(handcompare2[4]))
+					{
+						if(num(handcompare1[3])>num(handcompare2[3]))
+						{
+							pguanyadora = puntuacions[i];
+							iguany = i;
+                            
+							empat=false;							
+							if(i==0)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+							}			
+							if(i==1)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+							}
+							if(i==2)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+							}
+							if(i==3)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+							}
+						}
+						if(num(handcompare1[3])==num(handcompare2[3]))
+						{
+							if(num(handcompare1[2])>num(handcompare2[2]))
+							{
+								pguanyadora = puntuacions[i];
+								iguany = i;
+                                
+								empat=false;
+								if(i==0)
+								{
+									for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+								}			
+								if(i==1)
+								{
+									for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+								}
+								if(i==2)
+								{
+									for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+								}
+								if(i==3)
+								{
+									for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+								}
+							}
+							if(num(handcompare1[2])==num(handcompare2[2]))
+							{
+								empat = true;
+								pguanyadora = puntuacions[i];
+								jugadaempat = pguanyadora;
+								guanyadors[i-1]=1;
+								guanyadors[i]=1;
+							}	
+						}					
+					}
+				}
 			}
 			if(pguanyadora==3)
 			{
-
+				if(num(handcompare1[0])>num(handcompare2[0]))
+				{
+					pguanyadora = puntuacions[i];
+					iguany = i;
+                    
+					empat=false;
+					if(i==0)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+					}			
+					if(i==1)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+					}
+					if(i==2)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+					}
+					if(i==3)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+					}
+				}
+				if(num(handcompare1[0])==num(handcompare2[0]) and noempat)
+				{
+					if(num(handcompare1[2])>num(handcompare2[2]))
+					{
+						pguanyadora = puntuacions[i];
+						iguany = i;
+                        
+						empat=false;
+						if(i==0)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+						}			
+						if(i==1)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+						}
+						if(i==2)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+						}
+						if(i==3)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+						}
+					}
+					if(num(handcompare1[2])==num(handcompare2[2]) and noempat)
+					{
+						if(num(handcompare1[4])>num(handcompare2[4]))
+						{
+							pguanyadora = puntuacions[i];
+							iguany = i;
+                            
+							empat=false;							
+							if(i==0)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+							}			
+							if(i==1)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+							}
+							if(i==2)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+							}
+							if(i==3)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+							}
+						}
+						if(num(handcompare1[4])==num(handcompare2[4]))
+						{
+							empat = true;
+							pguanyadora = puntuacions[i];
+							jugadaempat = pguanyadora;
+							guanyadors[i-1]=1;
+							guanyadors[i]=1;
+						}					
+					}
+				}
 			}
 			if(pguanyadora==4)
 			{
-
+				if(num(handcompare1[0])>num(handcompare2[0]))
+				{
+					pguanyadora = puntuacions[i];
+					iguany = i;
+                    
+					empat=false;
+					if(i==0)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+					}			
+					if(i==1)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+					}
+					if(i==2)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+					}
+					if(i==3)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+					}
+                    
+				}
+				if(num(handcompare1[0])==num(handcompare2[0]))
+				{
+                    //std::cout<<"compare1: "<<num(handcompare1[0])<<num(handcompare2[0])<<" compare2"<<std::endl; 
+					if(num(handcompare1[3])>num(handcompare2[3]))
+					{
+						pguanyadora = puntuacions[i];
+						iguany = i;
+                        
+						empat=false;
+						if(i==0)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+						}			
+						if(i==1)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+						}
+						if(i==2)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+						}
+						if(i==3)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+						}
+                        
+					}
+					if(num(handcompare1[3])==num(handcompare2[3]))
+					{
+						//std::cout<<"compare1: "<<num(handcompare1[3])<<num(handcompare2[3])<<" compare2"<<std::endl; 
+						if(num(handcompare1[4])>num(handcompare2[4]))
+						{
+							pguanyadora = puntuacions[i];
+							iguany = i;
+                            
+							empat=false;							
+							if(i==0)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+							}			
+							if(i==1)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+							}
+							if(i==2)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+							}
+							if(i==3)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+							}
+                            
+						}
+                        
+						if(num(handcompare1[4])==num(handcompare2[4]))
+						{
+							//std::cout<<"compare1: "<<num(handcompare1[4])<<num(handcompare2[4])<<" compare2"<<std::endl; 
+							empat = true;
+							pguanyadora = puntuacions[i];
+							jugadaempat = pguanyadora;
+							guanyadors[i-1]=1;
+							guanyadors[i]=1;
+						}		
+					}
+				}
 			}
 			if(pguanyadora==5)
 			{
-
+				if(num(handcompare1[0])>num(handcompare2[0]))
+				{
+					pguanyadora = puntuacions[i];
+					iguany = i;
+                    
+					empat=false;
+					if(i==0)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+					}			
+					if(i==1)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+					}
+					if(i==2)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+					}
+					if(i==3)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+					}
+				}
+				if(num(handcompare1[0])==num(handcompare2[0]))
+				{
+					empat = true;
+					pguanyadora = puntuacions[i];
+					jugadaempat = pguanyadora;
+					guanyadors[i-1]=1;
+					guanyadors[i]=1;
+				}
 			}
 			if(pguanyadora==6)
 			{
-
+				if(num(handcompare1[4])>num(handcompare2[4]))
+				{
+					pguanyadora = puntuacions[i];
+					iguany = i;
+                    
+					empat=false;
+                    
+					if(i==0)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+					}			
+					if(i==1)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+					}
+					if(i==2)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+					}
+					if(i==3)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+					}
+				}
+				if(num(handcompare1[4])==num(handcompare2[4]))
+				{
+					if(num(handcompare1[1])>num(handcompare2[1]))
+					{
+						pguanyadora = puntuacions[i];
+						iguany = i;
+                        
+						empat=false;
+						if(i==0)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+						}			
+						if(i==1)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+						}
+						if(i==2)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+						}
+						if(i==3)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+						}
+					}
+					if(num(handcompare1[3])==num(handcompare2[3]))
+					{
+						if(num(handcompare1[2])>num(handcompare2[2]))
+						{
+							pguanyadora = puntuacions[i];
+							iguany = i;
+                            
+							empat=false;
+							if(i==0)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+							}			
+							if(i==1)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+							}
+							if(i==2)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+							}
+							if(i==3)
+							{
+								for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+							}
+						}
+						if(num(handcompare1[2])==num(handcompare2[2]))
+						{
+							if(num(handcompare1[1])>num(handcompare2[1]))
+							{
+								pguanyadora = puntuacions[i];
+								iguany = i;
+                                
+								empat=false;
+								if(i==0)
+								{
+									for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+								}			
+								if(i==1)
+								{
+									for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+								}
+								if(i==2)
+								{
+									for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+								}
+								if(i==3)
+								{
+									for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+								}
+							}
+							if(num(handcompare1[1])==num(handcompare2[1]))
+							{
+								if(num(handcompare1[0])>num(handcompare2[0]))
+								{
+									pguanyadora = puntuacions[i];
+									iguany = i;
+                                    
+									empat=false;
+									if(i==0)
+									{
+										for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+									}			
+									if(i==1)
+									{
+										for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+									}
+									if(i==2)
+									{
+										for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+									}
+									if(i==3)
+									{
+										for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+									}
+								}
+								if(num(handcompare1[0])==num(handcompare2[0]))
+								{
+									empat = true;
+									pguanyadora = puntuacions[i];
+									jugadaempat = pguanyadora;
+									guanyadors[i-1]=1;
+									guanyadors[i]=1;
+								}	
+							}	
+						}
+					}
+				}
 			}
 			if(pguanyadora==7)
 			{
-
+				if(num(handcompare1[0])>num(handcompare2[0]))
+				{
+					pguanyadora = puntuacions[i];
+					iguany = i;
+                    
+					empat=false;
+					if(i==0)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+					}			
+					if(i==1)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+					}
+					if(i==2)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+					}
+					if(i==3)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+					}
+				}
+				if(num(handcompare1[0])==num(handcompare2[0]))
+				{
+					if(num(handcompare1[3])>num(handcompare2[3]))
+					{
+						pguanyadora = puntuacions[i];
+						iguany = i;
+                        
+						empat=false;
+						if(i==0)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+						}			
+						if(i==1)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+						}
+						if(i==2)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+						}
+						if(i==3)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+						}
+					}
+					if(num(handcompare1[3])==num(handcompare2[3]))
+					{
+						empat = true;
+						pguanyadora = puntuacions[i];
+						jugadaempat = pguanyadora;
+						guanyadors[i-1]=1;
+						guanyadors[i]=1;
+					}
+				}
 			}
 			if(pguanyadora==8)
 			{
-
+				if(num(handcompare1[0])>num(handcompare2[0]))
+				{
+					pguanyadora = puntuacions[i];
+					iguany = i;
+                    
+					empat=false;
+					if(i==0)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+					}			
+					if(i==1)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+					}
+					if(i==2)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+					}
+					if(i==3)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+					}
+				}
+				if(num(handcompare1[0])==num(handcompare2[0]))
+				{
+					if(num(handcompare1[4])>num(handcompare2[4]))
+					{
+						pguanyadora = puntuacions[i];
+						iguany = i;
+                        
+						empat=false;
+						if(i==0)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+						}			
+						if(i==1)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+						}
+						if(i==2)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+						}
+						if(i==3)
+						{
+							for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+						}
+					}
+					if(num(handcompare1[4])==num(handcompare2[4]))
+					{
+						empat = true;
+						pguanyadora = puntuacions[i];
+						jugadaempat = pguanyadora;
+						guanyadors[i-1]=1;
+						guanyadors[i]=1;
+					}
+				}
 			}
 			if(pguanyadora==9)
 			{
-
+				if(num(handcompare1[0])>num(handcompare2[0]))
+				{
+					pguanyadora = puntuacions[i];
+					iguany = i;
+                    
+					empat=false;
+					if(i==0)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres1[j];
+					}			
+					if(i==1)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres2[j];
+					}
+					if(i==2)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres3[j];
+					}
+					if(i==3)
+					{
+						for(int j =0;j<5;j++)handcompare2[j]=handres4[j];
+					}
+				}
+				if(num(handcompare1[0])==num(handcompare2[0]))
+				{
+					empat = true;
+					pguanyadora = puntuacions[i];
+					jugadaempat = pguanyadora;
+					guanyadors[i-1]=1;
+					guanyadors[i-1]=1;
+					guanyadors[i]=1;
+				}
 			}
+			
 		}
+        
 	}
-	int jugadorguanyadorfinal;
-		
-	for(int i=0;i<puntuacions.size();i++)
-	{
-		if(pguanyadora == puntuacions[i]) jugadorguanyadorfinal = i;
-	}
-
-
-	return jugadorguanyadorfinal;
+    
+	if(empat)std::cout<<"jugada guanyadora : "<< pguanyadora<<std::endl;
+	if(empat)std::cout<<"EMPAT: "<< pguanyadora<<std::endl;
+	if(empat)return -1;
+        return iguany;
 }

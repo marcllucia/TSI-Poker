@@ -28,11 +28,13 @@ class Game : public OnTable < CanMyTap < CanDirectObjects < Graphic > > >
     TableCard Cards[5];
 	Player Players[4];
     ofSoundPlayer knock;
-    int c0[7],c1[7],c2[7],c3[7];
+    int c0[7],c1[7],c2[7],c3[7],winners[4];
 	int numPlayers;
 	int smallBlind;
     int money;
     float angle;
+    float temps;
+    float moreTime;
     int bet;
     int lastBet;
     int turn;
@@ -44,6 +46,7 @@ class Game : public OnTable < CanMyTap < CanDirectObjects < Graphic > > >
     bool preriver;
     bool river;
     bool talked;
+    bool finish;
     ofTrueTypeFont	text;
 
     std::map<int, tuio::DirectObject*> objects;

@@ -5,6 +5,7 @@ Player::Player()
 {
     bet=0;
     increment=0;
+    winner=false;
     playing=true;
     active=false;
     lastBet=0;
@@ -39,6 +40,8 @@ void Player::draw()
     char moneyValue[255]="Money: ";
     char moneyString[255];
     char tempString[255];
+    char win[255]="WINNER";
+
     char temp[255];
     if(playing)
     {
@@ -79,7 +82,7 @@ void Player::draw()
     ofRectangle rect = moneyText.getStringBoundingBox(tempString, 0,30);
     ofRectangle rect2 = moneyText.getStringBoundingBox(tempString, 0,-30);
 
-
+    
     ofPushMatrix();
     ofTranslate(zone.x+xPos,zone.y+yPos,0);
     ofRotateZ(angle);
@@ -88,7 +91,18 @@ void Player::draw()
     ofSetColor(255,215,0);
     ofLine(rect.x,rect.y+rect.height,rect.x+rect.width,rect.y+rect.height) ;  
     ofLine(rect2.x,rect2.y,rect2.x+rect2.width,rect2.y) ;  
-    ofSetColor(255,255,255);
+    if(position==0)
+    {
+        ofSetColor(0,0,255);
+    }
+    else if(position==1)
+    {
+        ofSetColor(255,0,0);
+    }
+    else
+    {
+        ofSetColor(255,255,255);
+    }
     moneyText.drawString(tempString, 0,0);
     ofPopMatrix();
     
@@ -96,7 +110,16 @@ void Player::draw()
     ofTranslate(zone.x+moneyX,zone.y+moneyY,0);
     ofRotateZ(angle);
     ofScale(0.00026f,0.00026f,1);
-    moneyTable.drawString(moneyValue, 0,0);
+    if(winner)
+    {
+        ofSetColor(255,215,0);
+        moneyTable.drawString(win, 0,0);
+    }
+    else
+    {
+        ofSetColor(255,255,255);
+        moneyTable.drawString(moneyValue, 0,0);
+    }
     ofPopMatrix();
 
 }

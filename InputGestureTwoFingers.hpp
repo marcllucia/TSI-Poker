@@ -73,7 +73,7 @@ namespace tuio
                 aux = x1_i - x2_i;
                 aux2 = y1_i - y2_i;
                 aux = sqrt(pow(aux,2) + pow(aux2,2));
-                if(aux<= 0.03)
+                if(aux<= 0.06)
                 {
                     aux = (x1_i + x2_i)/2;
                     aux2 = (y1_i + y2_i)/2;
